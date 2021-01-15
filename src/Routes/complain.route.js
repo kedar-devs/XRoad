@@ -1,3 +1,5 @@
+const { route } = require("../app");
+const complain = require("../Model/Complain.model");
 const Complain = require("../Model/Complain.model");
 const router = require("express").Router();
 router.get("/getLocation", (req, res) => {
@@ -58,9 +60,9 @@ router.post("/addcomplain", (req, res) => {
   sampleFile = req.files.file;
   uploadPath = __dirname + "/Data/" + sampleFile.name;
   const priority = req.body.priority;
-  const status = 0;
   const upvotes = 1;
-  const level = 1;
+  const level = 0;
+  const ward = req.params.ward;
   const discription = req.body.description;
   const lat = req.body.latitude;
   const long = req.body.longitude;
@@ -124,6 +126,27 @@ router.post("/addcomplain", (req, res) => {
   //       return res.status(500).send("Error :" + err);
   //     });
 });
+
+router.get("/get-ward-complains/:id", (req, res) => {
+  Complain.find({ ward: Number(req.params.id) })
+    .then((complain) => {
+      res.status(200).json(complain);
+    })
+    .catch((err) => {
+      res.status(500).send("Error:" + err.message);
+    });
+});
+
+router.get("/get-levelwise/:level", (req, res) => {
+  Complain.find({ level: Number(req.params.level) })
+    .then((complain) => {
+      res.status(200).json(complain);
+    })
+    .catch((err) => {
+      res.status(500).send("Error:" + err.message);
+    });
+});
+
 router.put("/upvote", (req, res) => {
   Complain.findById(req.body.id).then((complain) => {
     console.log(complain);
@@ -148,9 +171,8 @@ router.put("/upvote", (req, res) => {
       });
   });
 });
-router.put("/statusUpdate", (req, res) => {
+router.put("/levelUpdate", (req, res) => {
   Complain.findById(req.body.id).then((complain) => {
-    complain.status += 1;
     complain.level += 1;
     if (complain.level >= 4) {
       complain.ActionDate = new Date();
@@ -158,7 +180,7 @@ router.put("/statusUpdate", (req, res) => {
     complain
       .save()
       .then(() => {
-        res.status(200).send("Status Updated Sucessfully");
+        res.status(200).send("Level Updated Sucessfully");
       })
       .catch((err) => {
         res.status(500).send("Error: " + err.message);
@@ -184,4 +206,18 @@ router.get("/getlevel/:level", (req, res) => {
       res.status(500).send("Error: " + err.message);
     });
 });
+
+router.get("/getstats", async (req, res) => {
+  const passed = await Complain.find({
+    level: 2,
+    ward: req.query.ward,
+  });
+  const all = await Complain.find({ ward: req.query.ward });
+  res.status(200).json({
+    passed: passed.length,
+    pending: all.length - passed.length,
+    all: all.length,
+  });
+});
+
 module.exports = router;
