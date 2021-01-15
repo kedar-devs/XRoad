@@ -35,32 +35,6 @@ class CitizenForm extends Component {
         valid: false,
         touched: false,
       },
-      latitude: {
-        elementType: "input",
-        elementConfig: {
-          type: "number",
-          placeholder: "Latitude",
-        },
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: !false,
-        touched: false,
-      },
-      longitude: {
-        elementType: "input",
-        elementConfig: {
-          type: "number",
-          placeholder: "Longitude",
-        },
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: !false,
-        touched: false,
-      },
       priority: {
         elementType: "select",
         elementConfig: {
@@ -96,7 +70,8 @@ class CitizenForm extends Component {
         valid: true,
       },
     },
-
+    lat: "",
+    long: "",
     loading: false,
     formIsValid: false,
     image: null,
@@ -111,15 +86,11 @@ class CitizenForm extends Component {
         console.log("Longitude is :", position.coords.longitude);
 
         const updatedForm = { ...that.state.orderForm };
-        const lat = { ...updatedForm["latitude"] };
-        const lon = { ...updatedForm["longitude"] };
-
-        lat.value = position.coords.latitude;
-        lon.value = position.coords.longitude;
-        updatedForm["latitude"] = lat;
-        updatedForm["longitude"] = lon;
-
-        that.setState({ orderForm: updatedForm });
+        that.setState({
+          orderForm: updatedForm,
+          lat: position.coords.langitude,
+          long: position.coords.longitude,
+        });
       });
     } else {
       // console.log('Not Available')
@@ -157,6 +128,10 @@ class CitizenForm extends Component {
     // console.log(updatedFormElement)
   };
 
+  updateLocation = (location) => {
+    this.setState({ lat: location.lat, long: location.lng });
+  };
+
   submitHandler = (event) => {
     event.preventDefault();
     const formData = {};
@@ -168,13 +143,14 @@ class CitizenForm extends Component {
     data.set("encType", "multipart/form-data");
     data.append("name", this.state.orderForm.name.value);
     data.append("email", this.state.orderForm.email.value);
-    data.append("latitude", this.state.orderForm.latitude.value);
-    data.append("longitude", this.state.orderForm.longitude.value);
+    data.append("latitude", this.state.lat);
+    data.append("longitude", this.state.long);
     data.append("priority", this.state.orderForm.priority.value);
     data.append("description", this.state.orderForm.description.value);
     data.append("file", this.state.image);
-    const multerimage = URL.createObjectURL(this.state.image);
+    // const multerimage = URL.createObjectURL(this.state.image);
     // alert(multerimage);
+    console.log(data);
     axios
       .post("http://localhost:5000/complain/addcomplain", data)
       .then((res) => {
