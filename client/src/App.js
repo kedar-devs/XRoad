@@ -1,5 +1,6 @@
 import "./App.css";
 import { useState, useEffect } from "react";
+import Map from "./components/Map";
 import GetUserLocation from "./components/GetUserLocation";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   return (
     <div className="App">
       {currentLocation.lat}
+      <Map center={currentLocation} />
       <GetUserLocation setCurrentLocation={setCurrentLocation} />
     </div>
   );
