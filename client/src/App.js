@@ -1,6 +1,10 @@
 import "./App.css";
-import LandingPage from "./components/Landingpage/LandingPage";
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LandingPage from "./components/Landingpage/LandingPage";
+import ComplainForm from "./components/Forms/CitizenForm/CitizenForm";
+import UpvoteForm from "./components/Forms/UpvoteForm/UpvoteForm";
+import Map from "./components/Map";
 import GetUserLocation from "./components/GetUserLocation";
 import DisplayTable from "./components/DisplayTable/DisplayTable";
 import HorizontalLineHeading from "./components/HorizontalLineHeading/HorizontalLineHeading";
@@ -17,11 +21,23 @@ function App() {
 
   return (
     <div className="App">
-      <LandingPage />
-      {currentLocation.lat}
-      <GetUserLocation setCurrentLocation={setCurrentLocation} />
-      {/* <HorizontalLineHeading title={"Registered complaints"} />
-      <DisplayTable /> */}
+      <Router>
+        <GetUserLocation setCurrentLocation={setCurrentLocation} />
+        <Switch>
+          <Route exact path="/">
+            <LandingPage />
+          </Route>
+          <Route path="/lodge-complaint">
+            <ComplainForm center={currentLocation} />
+            <Map center={currentLocation} />
+          </Route>
+          <Route path="/upvote" component={UpvoteForm} />
+          <Route path="/allcomplaints">
+            <HorizontalLineHeading title={"Registred Complaints"} />
+            <DisplayTable />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
