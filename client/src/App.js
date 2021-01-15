@@ -1,6 +1,8 @@
 import "./App.css";
-import LandingPage from "./components/Landingpage/LandingPage";
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LandingPage from "./components/Landingpage/LandingPage";
+import ComplainForm from "./components/Forms/CitizenForm";
 import Map from "./components/Map";
 import GetUserLocation from "./components/GetUserLocation";
 
@@ -16,12 +18,20 @@ function App() {
 
   return (
     <div className="App">
-      <LandingPage />
-      {currentLocation.lat}
-      <Map center={currentLocation} />
-      <GetUserLocation setCurrentLocation={setCurrentLocation} />
+      <Router>
+        <GetUserLocation setCurrentLocation={setCurrentLocation} />
+        <Switch>
+          <Route exact path="/">
+            <LandingPage />
+          </Route>
+          <Route path="/lodge-complaint">
+            <ComplainForm center={currentLocation} />
+            <Map center={currentLocation} />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
 
-export default App
+export default App;
