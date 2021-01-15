@@ -3,19 +3,21 @@ import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LandingPage from "./components/Landingpage/LandingPage";
 import ComplainForm from "./components/Forms/CitizenForm/CitizenForm";
-import UpvoteForm from "./components/Forms/UpvoteForm/UpvoteForm"
+import UpvoteForm from "./components/Forms/UpvoteForm/UpvoteForm";
 import Map from "./components/Map";
 import GetUserLocation from "./components/GetUserLocation";
+import DisplayTable from "./components/DisplayTable/DisplayTable";
+import HorizontalLineHeading from "./components/HorizontalLineHeading/HorizontalLineHeading";
 
 function App() {
-	const [currentLocation, setCurrentLocation] = useState({
-		lat: 15.292158,
-		lng: 73.969542,
-	})
+  const [currentLocation, setCurrentLocation] = useState({
+    lat: 15.292158,
+    lng: 73.969542,
+  });
 
-	useEffect(() => {
-		console.log(currentLocation)
-	}, [currentLocation])
+  useEffect(() => {
+    console.log(currentLocation);
+  }, [currentLocation]);
 
   return (
     <div className="App">
@@ -29,7 +31,11 @@ function App() {
             <ComplainForm center={currentLocation} />
             <Map center={currentLocation} />
           </Route>
-					<Route path='/upvote' component={UpvoteForm} />
+          <Route path="/upvote" component={UpvoteForm} />
+          <Route path="/allcomplaints">
+            <HorizontalLineHeading title={"Registred Complaints"} />
+            <DisplayTable />
+          </Route>
         </Switch>
       </Router>
     </div>
