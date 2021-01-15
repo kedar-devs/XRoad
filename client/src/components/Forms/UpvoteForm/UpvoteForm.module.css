@@ -1,22 +1,30 @@
 .UpvoteForm {
-	margin: 20px auto;
-	width: 80%;
-	text-align: center;
-	box-shadow: 0 2px 3px #eee;
-	padding: 10px;
-	box-sizing: border-box;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  box-shadow: 0 2px 3px #eee;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.2);
 }
-
+.upvotingform {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 .UpvoteForm h1 {
-	color: #2e3440;
+  color: aliceblue;
 }
-
+.UpvoteForm h1:before,
+.UpvoteForm h1:after {
+  background-color: white !important;
+}
 .Input {
-	display: block;
+  display: block;
 }
-
 @media (min-width: 600px) {
-	.UpvoteForm {
-		width: 500px;
-	}
+  .UpvoteForm {
+    width: 500px;
+  }
 }
