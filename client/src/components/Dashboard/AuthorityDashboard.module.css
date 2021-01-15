@@ -1,0 +1,7 @@
+.Root {
+	background-color: rgba(236, 239, 244, 0.8);
+	padding: 1rem;
+	max-width: 80%;
+	margin: 2rem auto;
+	border-radius: 10px;
+}

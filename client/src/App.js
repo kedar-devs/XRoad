@@ -8,6 +8,7 @@ import Map from "./components/Map";
 import GetUserLocation from "./components/GetUserLocation";
 import DisplayTable from "./components/DisplayTable/DisplayTable";
 import HorizontalLineHeading from "./components/HorizontalLineHeading/HorizontalLineHeading";
+import AuthorityDashboard from "./components/Dashboard/AuthorityDashboard";
 
 function App() {
   const [currentLocation, setCurrentLocation] = useState({
@@ -31,6 +32,7 @@ function App() {
             <ComplainForm center={currentLocation} />
           </Route>
           <Route path="/upvote/:id" component={UpvoteForm} />
+          <Route path="/authority-dashboard" component={AuthorityDashboard} />
           <Route path="/allcomplaints">
             <HorizontalLineHeading title={"Registred Complaints"} />
             <DisplayTable />
