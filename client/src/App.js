@@ -1,10 +1,11 @@
-import './App.css'
-import LandingPage from './components/Landingpage/LandingPage'
-import { useState, useEffect } from 'react'
-import Map from './components/Map'
-import GetUserLocation from './components/GetUserLocation'
-import CitizenForm from './components/Forms/CitizenForm/CitizenForm'
-import UpvoteForm from './components/Forms/UpvoteForm/UpvoteForm'
+import "./App.css";
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LandingPage from "./components/Landingpage/LandingPage";
+import ComplainForm from "./components/Forms/CitizenForm/CitizenForm";
+import UpvoteForm from "./components/Forms/UpvoteForm/UpvoteForm"
+import Map from "./components/Map";
+import GetUserLocation from "./components/GetUserLocation";
 
 function App() {
 	const [currentLocation, setCurrentLocation] = useState({
@@ -16,16 +17,23 @@ function App() {
 		console.log(currentLocation)
 	}, [currentLocation])
 
-	return (
-		<div className='App'>
-			<LandingPage />
-			{currentLocation.lat}
-			<Map center={currentLocation} />
-			<GetUserLocation setCurrentLocation={setCurrentLocation} />
-			<CitizenForm />
-			<UpvoteForm />
-		</div>
-	)
+  return (
+    <div className="App">
+      <Router>
+        <GetUserLocation setCurrentLocation={setCurrentLocation} />
+        <Switch>
+          <Route exact path="/">
+            <LandingPage />
+          </Route>
+          <Route path="/lodge-complaint">
+            <ComplainForm center={currentLocation} />
+            <Map center={currentLocation} />
+          </Route>
+					<Route path='/upvote' component={UpvoteForm} />
+        </Switch>
+      </Router>
+    </div>
+  );
 }
 
-export default App
+export default App;
