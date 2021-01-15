@@ -1,0 +1,9 @@
+.lessthan25 svg {
+  color: #f44336;
+}
+.lessthan75 svg {
+  color: #ffeb3b;
+}
+.lessthan100 svg {
+  color: #4caf50;
+}

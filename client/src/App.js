@@ -2,6 +2,8 @@ import "./App.css";
 import LandingPage from "./components/Landingpage/LandingPage";
 import { useState, useEffect } from "react";
 import GetUserLocation from "./components/GetUserLocation";
+import DisplayTable from "./components/DisplayTable/DisplayTable";
+import HorizontalLineHeading from "./components/HorizontalLineHeading/HorizontalLineHeading";
 
 function App() {
   const [currentLocation, setCurrentLocation] = useState({
@@ -18,6 +20,8 @@ function App() {
       <LandingPage />
       {currentLocation.lat}
       <GetUserLocation setCurrentLocation={setCurrentLocation} />
+      {/* <HorizontalLineHeading title={"Registered complaints"} />
+      <DisplayTable /> */}
     </div>
   );
 }
