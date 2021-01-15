@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import Button from '../UI/Button/Button'
+import Button from '../../UI/Button/Button'
 import classes from './CitizenForm.module.css'
-import Input from '../UI/Input/Input'
-import Spinner from '../UI/Spinner/Spinner'
+import Input from '../../UI/Input/Input'
+import Spinner from '../../UI/Spinner/Spinner'
 
 class CitizenForm extends Component {
 	state = {
@@ -44,7 +44,7 @@ class CitizenForm extends Component {
 				validation: {
 					required: true,
 				},
-				valid: false,
+				valid: !false,
 				touched: false,
 			},
 			longitude: {
@@ -57,16 +57,16 @@ class CitizenForm extends Component {
 				validation: {
 					required: true,
 				},
-				valid: false,
+				valid: !false,
 				touched: false,
 			},
 			priority: {
 				elementType: 'select',
 				elementConfig: {
 					options: [
-						{ value: 'low', displayValue: 'Low' },
-						{ value: 'medium', displayValue: 'Medium' },
-						{ value: 'high', displayValue: 'High' },
+						{ value: 1, displayValue: 'Priority 1 (Low)' },
+						{ value: 2, displayValue: 'Priority 2 (Medium)' },
+						{ value: 3, displayValue: 'Priority 3 (High)' },
 					],
 				},
 				value: 'medium',
