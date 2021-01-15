@@ -31,7 +31,7 @@ function App() {
           <Route path="/lodge-complaint">
             <ComplainForm center={currentLocation} />
           </Route>
-          <Route path="/upvote" component={UpvoteForm} />
+          <Route path="/upvote/:id" component={UpvoteForm} />
           <Route path="/authority-dashboard" component={AuthorityDashboard} />
           <Route path="/allcomplaints">
             <HorizontalLineHeading title={"Registred Complaints"} />

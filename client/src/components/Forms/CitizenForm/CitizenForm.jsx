@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Button from "../../UI/Button/Button";
-import Map from "../../Map";
 import classes from "./CitizenForm.module.css";
 import Input from "../../UI/Input/Input";
 import Spinner from "../../UI/Spinner/Spinner";
 import axios from "axios";
+import Map from "../../Map";
 class CitizenForm extends Component {
   state = {
     orderForm: {
@@ -71,7 +71,7 @@ class CitizenForm extends Component {
       },
     },
     lat: "",
-    long: "",
+    lon: "",
     loading: false,
     formIsValid: false,
     image: null,
@@ -85,12 +85,10 @@ class CitizenForm extends Component {
         console.log("Latitude is :", position.coords.latitude);
         console.log("Longitude is :", position.coords.longitude);
 
-        const updatedForm = { ...that.state.orderForm };
-        that.setState({
-          orderForm: updatedForm,
-          lat: position.coords.langitude,
-          long: position.coords.longitude,
-        });
+        const updatedForm = { ...that.state };
+        updatedForm["lat"] = position.coords.latitude;
+        updatedForm["lon"] = position.coords.longitude;
+        that.setState({ updatedForm });
       });
     } else {
       // console.log('Not Available')
@@ -111,7 +109,13 @@ class CitizenForm extends Component {
     // console.log(event.target.value)
     const updatedOrderForm = { ...this.state.orderForm };
     const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
+
     updatedFormElement.value = event.target.value;
+
+    if (updatedFormElement.elementConfig.type === "file") {
+      this.setState({ image: event.target.files[0] });
+    }
+
     updatedFormElement.valid = this.checkValidity(
       updatedFormElement.value,
       updatedFormElement.validation
@@ -127,7 +131,6 @@ class CitizenForm extends Component {
     this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
     // console.log(updatedFormElement)
   };
-
   updateLocation = (location) => {
     this.setState({ lat: location.lat, long: location.lng });
   };
@@ -135,7 +138,11 @@ class CitizenForm extends Component {
   submitHandler = (event) => {
     event.preventDefault();
     const formData = {};
-
+    // for (let formElementIdentifier in this.state.orderForm) {
+    // 	formData[formElementIdentifier] = this.state.orderForm[
+    // 		formElementIdentifier
+    // 	].value
+    // }
     // Image Upload
     const image = this.state.image;
     console.log(image);
@@ -144,13 +151,12 @@ class CitizenForm extends Component {
     data.append("name", this.state.orderForm.name.value);
     data.append("email", this.state.orderForm.email.value);
     data.append("latitude", this.state.lat);
-    data.append("longitude", this.state.long);
+    data.append("longitude", this.state.lon);
     data.append("priority", this.state.orderForm.priority.value);
     data.append("description", this.state.orderForm.description.value);
     data.append("file", this.state.image);
-    // const multerimage = URL.createObjectURL(this.state.image);
+    const multerimage = URL.createObjectURL(this.state.image);
     // alert(multerimage);
-    console.log(data);
     axios
       .post("http://localhost:5000/complain/addcomplain", data)
       .then((res) => {
