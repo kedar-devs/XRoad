@@ -69,7 +69,7 @@ class CitizenForm extends Component {
 						{ value: 3, displayValue: 'Priority 3 (High)' },
 					],
 				},
-				value: 'medium',
+				value: '2',
 				validation: {},
 				valid: true,
 			},
@@ -82,10 +82,23 @@ class CitizenForm extends Component {
 				validation: {},
 				valid: true,
 			},
+			image: {
+				elementType: 'input',
+				elementConfig: {
+					placeholder: 'Image',
+					type: 'file',
+				},
+				value: '',
+				validation: {
+					required: true,
+				},
+				valid: true,
+			},
 		},
 
 		loading: false,
 		formIsValid: false,
+		image: null,
 	}
 
 	componentDidMount() {
@@ -126,7 +139,13 @@ class CitizenForm extends Component {
 		// console.log(event.target.value)
 		const updatedOrderForm = { ...this.state.orderForm }
 		const updatedFormElement = { ...updatedOrderForm[inputIdentifier] }
+
 		updatedFormElement.value = event.target.value
+
+		if (updatedFormElement.elementConfig.type === 'file') {
+			this.setState({ image: event.target.files[0] })
+		}
+
 		updatedFormElement.valid = this.checkValidity(
 			updatedFormElement.value,
 			updatedFormElement.validation
@@ -151,6 +170,9 @@ class CitizenForm extends Component {
 				formElementIdentifier
 			].value
 		}
+		// Image Upload
+		const image = this.state.image
+		console.log(image)
 		alert(JSON.stringify(formData, null, 2))
 	}
 
