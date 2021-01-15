@@ -1,4 +1,5 @@
 import "./App.css";
+import LandingPage from "./components/Landingpage/LandingPage";
 import { useState, useEffect } from "react";
 import Map from "./components/Map";
 import GetUserLocation from "./components/GetUserLocation";
@@ -15,6 +16,7 @@ function App() {
 
   return (
     <div className="App">
+      <LandingPage />
       {currentLocation.lat}
       <Map center={currentLocation} />
       <GetUserLocation setCurrentLocation={setCurrentLocation} />
