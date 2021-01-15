@@ -62,11 +62,11 @@ router.post("/addcomplain", (req, res) => {
   const priority = req.body.priority;
   const upvotes = 1;
   const level = 0;
-  const ward = req.params.ward;
   const discription = req.body.description;
   const lat = req.body.latitude;
   const long = req.body.longitude;
   const img = uploadPath;
+  const ward = req.body.ward;
   sampleFile.mv(uploadPath, function (err) {
     if (err) {
       console.log(err);
@@ -78,11 +78,11 @@ router.post("/addcomplain", (req, res) => {
       console.log(comemail, compname, img);
       const NewComplain = new Complain({
         priority,
-        status,
         upvotes,
         discription,
         level,
         lat,
+        ward,
         long,
         img,
         comemail,
@@ -92,7 +92,7 @@ router.post("/addcomplain", (req, res) => {
       console.log(NewComplain);
       NewComplain.save()
         .then(() => {
-          //   return res.status(200).send("Complain Registered Sucessfully");
+          res.status(200).send("Complain Registered Sucessfully");
         })
         .catch((err) => {
           console.log(err);

@@ -35,6 +35,21 @@ class CitizenForm extends Component {
         valid: false,
         touched: false,
       },
+      ward: {
+        elementType: "select",
+        elementConfig: {
+          options: [
+            { value: 1, displayValue: "Ward 1" },
+            { value: 2, displayValue: "Ward 2" },
+            { value: 3, displayValue: "Ward 3" },
+            { value: 4, displayValue: "Ward 4" },
+            { value: 5, displayValue: "Ward 5" },
+          ],
+        },
+        value: "2",
+        validation: {},
+        valid: true,
+      },
       priority: {
         elementType: "select",
         elementConfig: {
@@ -71,7 +86,7 @@ class CitizenForm extends Component {
       },
     },
     lat: "",
-    lon: "",
+    long: "",
     loading: false,
     formIsValid: false,
     image: null,
@@ -87,7 +102,7 @@ class CitizenForm extends Component {
 
         const updatedForm = { ...that.state };
         updatedForm["lat"] = position.coords.latitude;
-        updatedForm["lon"] = position.coords.longitude;
+        updatedForm["long"] = position.coords.longitude;
         that.setState({ updatedForm });
       });
     } else {
@@ -145,13 +160,13 @@ class CitizenForm extends Component {
     // }
     // Image Upload
     const image = this.state.image;
-    console.log(image);
     const data = new FormData();
     data.set("encType", "multipart/form-data");
     data.append("name", this.state.orderForm.name.value);
     data.append("email", this.state.orderForm.email.value);
     data.append("latitude", this.state.lat);
     data.append("longitude", this.state.lon);
+    data.append("ward", this.state.orderForm.ward.value);
     data.append("priority", this.state.orderForm.priority.value);
     data.append("description", this.state.orderForm.description.value);
     data.append("file", this.state.image);
@@ -159,9 +174,7 @@ class CitizenForm extends Component {
     // alert(multerimage);
     axios
       .post("http://localhost:5000/complain/addcomplain", data)
-      .then((res) => {
-        console.log(res);
-      })
+      .then(() => alert("Complain registered successfully"))
       .catch((err) => {
         console.log(err);
       });
