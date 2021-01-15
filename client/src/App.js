@@ -26,7 +26,6 @@ function App() {
           </Route>
           <Route path="/lodge-complaint">
             <ComplainForm center={currentLocation} />
-            <Map center={currentLocation} />
           </Route>
         </Switch>
       </Router>

@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 
 const containerStyle = {
-  width: "400px",
+  width: "500px",
   height: "400px",
 };
 
-const Map = ({ center }) => {
+const Map = ({ center, updateLocation }) => {
   const [markerPosition, setMarkerPosition] = useState(center);
+
+  useEffect(() => {
+    updateLocation(markerPosition);
+  }, [markerPosition, updateLocation]);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyC97Nl6IVxQFCv_lMuK3kBLMDsaXhV8yGA",
@@ -19,8 +23,6 @@ const Map = ({ center }) => {
       lng: e.latLng.lng(),
     });
   };
-
-  console.log(markerPosition);
 
   return isLoaded ? (
     <GoogleMap
