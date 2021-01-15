@@ -1,22 +1,41 @@
+.layout {
+  margin: 5%;
+  padding: 5%;
+  display: grid;
+  grid-template-columns: auto auto;
+  background-color: aliceblue;
+  border-radius: 10px;
+}
+
 .CitizenForm {
-	margin: 20px auto;
-	width: 80%;
-	text-align: center;
-	box-shadow: 0 2px 3px #eee;
-	padding: 10px;
-	box-sizing: border-box;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  box-shadow: 0 2px 3px #eee;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .CitizenForm h1 {
-	color: #2e3440;
+  color: #2e3440;
 }
 
 .Input {
-	display: block;
+  display: block;
+}
+
+.map {
+  margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .layout {
+    grid-template-columns: auto;
+  }
 }
 
 @media (min-width: 600px) {
-	.CitizenForm {
-		width: 500px;
-	}
+  .CitizenForm {
+    width: 500px;
+  }
 }

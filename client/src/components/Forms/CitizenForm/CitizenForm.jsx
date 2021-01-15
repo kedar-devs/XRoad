@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Button from "../../UI/Button/Button";
+import Map from "../../Map";
 import classes from "./CitizenForm.module.css";
 import Input from "../../UI/Input/Input";
 import Spinner from "../../UI/Spinner/Spinner";
@@ -139,13 +140,7 @@ class CitizenForm extends Component {
     // console.log(event.target.value)
     const updatedOrderForm = { ...this.state.orderForm };
     const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
-
     updatedFormElement.value = event.target.value;
-
-    if (updatedFormElement.elementConfig.type === "file") {
-      this.setState({ image: event.target.files[0] });
-    }
-
     updatedFormElement.valid = this.checkValidity(
       updatedFormElement.value,
       updatedFormElement.validation
@@ -165,11 +160,7 @@ class CitizenForm extends Component {
   submitHandler = (event) => {
     event.preventDefault();
     const formData = {};
-    // for (let formElementIdentifier in this.state.orderForm) {
-    // 	formData[formElementIdentifier] = this.state.orderForm[
-    // 		formElementIdentifier
-    // 	].value
-    // }
+
     // Image Upload
     const image = this.state.image;
     console.log(image);
@@ -229,9 +220,20 @@ class CitizenForm extends Component {
     }
 
     return (
-      <div className={classes.CitizenForm}>
-        <h1>Add Complaint</h1>
-        {form}
+      <div className={classes.layout}>
+        <div className={classes.CitizenForm}>
+          <h1>Add Complaint</h1>
+          {form}
+        </div>
+        <div className={classes.map}>
+          <Map
+            center={this.props.center}
+            updateLocation={this.updateLocation}
+          />
+          <br />
+          <p>*By default your current location will be taken</p>
+          <p>**You can change the location on the map</p>
+        </div>
       </div>
     );
   }
