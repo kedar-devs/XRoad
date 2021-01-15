@@ -1,15 +1,27 @@
-import { Route, Switch } from 'react-router-dom'
-import './App.css'
-import CitizenForm from './components/Forms/CitizenForm'
+import "./App.css";
+import LandingPage from "./components/Landingpage/LandingPage";
+import { useState, useEffect } from "react";
+import Map from "./components/Map";
+import GetUserLocation from "./components/GetUserLocation";
 
 function App() {
-	return (
-		<div className='App'>
-			<Switch>
-				<Route path='/test-form' component={CitizenForm} />
-			</Switch>
-		</div>
-	)
+  const [currentLocation, setCurrentLocation] = useState({
+    lat: 15.292158,
+    lng: 73.969542,
+  });
+
+  useEffect(() => {
+    console.log(currentLocation);
+  }, [currentLocation]);
+
+  return (
+    <div className="App">
+      <LandingPage />
+      {currentLocation.lat}
+      <Map center={currentLocation} />
+      <GetUserLocation setCurrentLocation={setCurrentLocation} />
+    </div>
+  );
 }
 
 export default App
