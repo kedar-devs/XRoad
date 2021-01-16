@@ -151,10 +151,10 @@ class CitizenForm extends Component {
     // console.log(updatedFormElement)
   };
   updateLocation = (location) => {
-    this.setState({ lat: location.lat, lon: location.lng });
+    this.setState({ lat: location.lat, long: location.lng });
   };
 
-  submitHandler = (event) => {
+  submitHandler = async (event) => {
     event.preventDefault();
     const formData = {};
     // for (let formElementIdentifier in this.state.orderForm) {
@@ -163,40 +163,40 @@ class CitizenForm extends Component {
     // 	].value
     // }
     // Image Upload
-    // axios
-    //   .post("http://localhost:5000/complain/check-distance", {
-    //     lat: this.state.lat,
-    //     long: this.state.long,
-    //   })
-    //   .then((res) => this.setState({ status: res.data }));
-    const image = this.state.image;
-    const data = new FormData();
-    data.set("encType", "multipart/form-data");
-    data.append("name", this.state.orderForm.name.value);
-    data.append("email", this.state.orderForm.email.value);
-    data.append("latitude", "19.7514798");
-    data.append("longitude", "75.7138884");
-    data.append("ward", this.state.orderForm.ward.value);
-    data.append("priority", this.state.orderForm.priority.value);
-    data.append("description", this.state.orderForm.description.value);
-    data.append("file", this.state.image);
-    const multerimage = URL.createObjectURL(this.state.image);
+    const res = await axios.post(
+      "http://localhost:5000/complain/check-distance",
+      {
+        lat: this.state.lat,
+        long: this.state.long,
+      }
+    );
+    console.log(res);
+    if (res.data.complainstatus === "Registerd") {
+      alert("This location has already been registered");
+    } else {
+      console.log(res.data.complainstatus);
+      const data = new FormData();
+      data.set("encType", "multipart/form-data");
+      data.append("name", this.state.orderForm.name.value);
+      data.append("email", this.state.orderForm.email.value);
+      data.append("latitude", this.state.lat);
+      data.append("longitude", this.state.long);
+      data.append("ward", this.state.orderForm.ward.value);
+      data.append("priority", this.state.orderForm.priority.value);
+      data.append("description", this.state.orderForm.description.value);
+      data.append("file", this.state.image);
+      // const multerimage = URL.createObjectURL(this.state.image);
 
-    // if (this.state.status === "Not Registerd")
-    axios
-      .post("http://localhost:5000/complain/addcomplain", data)
-      .then(() => {
-        alert("Complain registered successfully");
-        let p = this.state;
-        p["done"] = true;
-        this.setState(p);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // else {
-    //   alert("This location has already been registered");
-    // }
+      axios
+        .post("http://localhost:5000/complain/addcomplain", data)
+        .then(() => {
+          alert("Complain registered successfully");
+          // window.location.href = "/lodge-complaint";
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 
     // alert(JSON.stringify(formData, null, 2));
   };
