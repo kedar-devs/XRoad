@@ -232,6 +232,14 @@ router.post("/addcomplain", (req, res) => {
 //       return res.status(500).send("Error :" + err);
 //     });
 
+router.get("/get-complain/:id", (req, res) => {
+  Complain.findById(req.params.id)
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => console.log(err));
+});
+
 router.get("/get-ward-complains/:id", (req, res) => {
   Complain.find({ ward: Number(req.params.id) })
     .then((complain) => {
