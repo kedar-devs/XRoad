@@ -12,7 +12,6 @@ import ProcessPage from "./components/Forms/ProcesForm/ProcessForm";
 import LoginForm from "./components/Forms/LoginForm/LoginForm";
 import ComplaintsDisplay from "./components/Dashboard/ComplaintsDisplay/ComplaintsDisplay";
 import ComplaintPage from "./components/ComplaintPage/ComplaintPage";
-
 function App() {
   const [currentLocation, setCurrentLocation] = useState({
     lat: 15.292158,

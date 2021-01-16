@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
-
+import Pdf from "./vhdl.pdf";
+import MyPdfViewer from "./MyPdfViewer";
 const useStyles = makeStyles((theme) => ({
   button: {
     marginRight: "20px",
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function IconLabelButtons() {
   const classes = useStyles();
-
+  const [showpdf, setShowpdf] = useState(false);
   return (
     <div>
       <Button
@@ -20,9 +21,11 @@ export default function IconLabelButtons() {
         size="small"
         className={classes.button}
         startIcon={<PictureAsPdfIcon />}
+        onClick={() => setShowpdf(true)}
       >
         See doc
       </Button>
+      {showpdf && <MyPdfViewer file={Pdf} onclick={() => setShowpdf(false)} />}
     </div>
   );
 }

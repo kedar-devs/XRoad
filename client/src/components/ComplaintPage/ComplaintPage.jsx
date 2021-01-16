@@ -90,17 +90,6 @@ const ComplaintPage = () => {
         ) : (
           <h1>Loading...</h1>
         )}
-        {/* <p>Filer Email:-email</p>
-        <p>
-          Description of problem:-.
-        </p>
-        <p>
-          Registered On:-{moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")}
-        </p>
-        <p>Priority:{"  "}1</p>
-        <p>No of upvotes:{"  "}3</p>
-        <p>Ward No:{"  "} 3</p>
-        <p>Address: Lorem ipsum dolor sit amet consectetur adipisicing. </p> */}
       </Grid>
       <Grid item container md={5} sm={12}>
         <img
