@@ -1,5 +1,4 @@
 const { route } = require("../app");
-const complain = require("../Model/Complain.model");
 const Complain = require("../Model/Complain.model");
 const router = require("express").Router();
 router.get("/getLocation", (req, res) => {
@@ -62,8 +61,8 @@ router.post("/addcomplain", (req, res) => {
   const priority = req.body.priority;
   const upvotes = 1;
   const level = 0;
-  const ward = req.params.ward;
   const discription = req.body.description;
+  const ward=req.body.ward
   const lat = req.body.latitude;
   const long = req.body.longitude;
   const img = uploadPath;
@@ -81,6 +80,7 @@ router.post("/addcomplain", (req, res) => {
         status,
         upvotes,
         discription,
+        ward,
         level,
         lat,
         long,
@@ -202,10 +202,47 @@ router.get("/getlevel/:level", (req, res) => {
     .then((complain) => {
       res.status(200).send(complain);
     })
+})
+// Naya hai yah
+router.put('/putaction',(req,res)=>{
+    let sampleFile
+    let uploadPath
+    sampleFile = req.files.pdf
+    uploadPath = __dirname +'/Data/' + sampleFile.name
+    sampleFile.mv(uploadPath, function(err) {
+        if (err)
+          return res.status(500).send(err);
+        
+    Complain.findOneAndUpdate({_id:req.body.id},{$push:{"ActionTaken":{
+        "action":req.body.action,
+        "link":uploadPath,
+        "officer":req.body.officer
+    }
+    }})
+    .then(result => {
+        console.log("inthen")
+        console.log(result)
+        res.status(200).send('ACTION Added successfully')
+    })
+    .catch(err =>{
+        console.log(err)
+        console.log("inerror")
+        res.status(500).send(err)
+    })
+})
+})
+//Naya hai yaahh
+router.get('/getAction/:id',(req, res) =>{
+    Complain.findById(req.params.id)
+    .then(complain=> {
+        console.log(complain)
+      var ActionArray = complain.ActionTaken
+      res.status(200).send({ ActionArray });
+    })
     .catch((err) => {
       res.status(500).send("Error: " + err.message);
     });
-});
+})
 
 router.get("/getstats", async (req, res) => {
   const passed = await Complain.find({

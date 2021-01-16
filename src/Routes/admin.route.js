@@ -6,46 +6,45 @@ const path = require("path");
 const saltRound = 8;
 //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
 const nodemailer = require("nodemailer");
-
-router.route("/add").post((req, res) => {
-  Authority.findOne({ email: req.body.email }, (err, user) => {
-    if (err) {
-      console.log(err);
-    }
-    if (!user) {
-      console.log(req.body);
-      if (req.body == null) {
-        return;
-      }
-      const email = req.body.email;
-      const password = req.body.password;
-      const ward = req.body.password;
-      const level = req.body.level;
-      const designation = req.body.designation;
-      const resetToken = " ";
-      const newUser = new Authority({
-        email,
-        ward,
-        password,
-        level,
-        designation,
-        resetToken,
-      });
-      bcrypt.hash(newUser.password, saltRound, (err, hash) => {
-        if (err) throw err;
-        newUser.password = hash;
-        newUser.save((err, user) => {
-          if (err) {
-            console.log(err);
-          } else {
-            let payload = { subject: user.Id };
-            let token = jwt.sign(payload, process.env.SECRET_KEY);
-            res.status(200).send({ token, user });
-          }
-        });
-      });
-
-      /*.then(res=>{
+router.route('/add').post((req,res)=>{
+    
+    Authority.findOne({email:req.body.email},(err,user)=>{
+        if(err){
+            console.log(err)
+        }
+        if(!user)
+        {
+            console.log(req.body)
+            if(req.body==null){
+                return 
+            }
+            const Id=req.body.id
+            const email=req.body.email            
+            const password=req.body.password
+            const level=req.body.level
+            const designation=req.body.designation
+            const ward=req.body.ward
+            const requestHandled=0
+            const unhandled=0
+            const resetToken=' '
+            const newUser=new Authority({Id,email,password,level,designation,ward,requestHandled,unhandled,resetToken})
+            bcrypt.hash(newUser.password,saltRound,(err,hash)=>{
+                if (err) throw err;
+                newUser.password=hash;
+                newUser.save((err,user)=>{
+                    if(err){
+                        console.log(err)
+                    }
+                    else{
+                        let payload={subject:user.Id}
+                        let token=jwt.sign(payload,process.env.SECRET_KEY)
+                        res.status(200).send({token,user})
+                    }
+                }) 
+            })
+            
+             
+             /*.then(res=>{
                  console.log(res.email)
                  let payload={subject:res.email}
                  let token=jwt.sign(payload,process.env.SECRET_KEY)
@@ -57,6 +56,34 @@ router.route("/add").post((req, res) => {
     }
   });
 });
+//Naya hai Yahh
+router.put('/actionTaken',(req, res)=>{
+  Authority.findById(req.body.id)
+  .then(admin=>{
+    admin.requestHandled+=1
+    admin.save()
+    .then(result=>{
+      res.status(200).send('Result')
+    })
+    .catch(error=>{
+      res.status(500).send('Error: ' + error)
+    })
+  })
+})
+router.put('/actionNotTaken',(req, res)=>{
+  Authority.findById(req.body.id)
+  .then(admin=>{
+    admin.unhandled=req.body.unhandled
+    admin.save()
+    .then(result=>{
+      res.status(200).send('Result')
+    })
+    .catch(error=>{
+      res.status(500).send('Error: ' + error)
+    })
+  })
+})
+//
 router.get("/user/:id", (req, res) => {
   Authority.findById(req.params.id)
     .then((user) => {
