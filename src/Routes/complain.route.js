@@ -161,6 +161,7 @@ router.get("/get-all-coordinates", async (req, res) => {
 });
 
 router.put("/upvote", (req, res) => {
+  console.log(req.body);
   Complain.findById(req.body.id).then((complain) => {
     console.log(complain);
     for (var i = 0; i < complain.comemail.length; i++) {
@@ -180,6 +181,7 @@ router.put("/upvote", (req, res) => {
         res.status(200).send("Complain Registered successfully");
       })
       .catch((err) => {
+        console.log(err);
         res.status(500).send("Error:" + err.message);
       });
   });

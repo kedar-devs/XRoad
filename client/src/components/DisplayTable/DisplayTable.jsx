@@ -32,27 +32,6 @@ const columns = [
   },
 ];
 
-function createData(name, code, population, size) {
-  return { name, code, population, size };
-}
-
-const rows = [
-  createData("India", Date.now(), 12, "upvote"),
-  createData("China", Date.now(), 35, "upvote"),
-  createData("Italy", Date.now(), 73, "upvote"),
-  createData("United States", Date.now(), 43, "upvote"),
-  createData("Canada", Date.now(), 16, "upvote"),
-  createData("Australia", Date.now(), 25, "upvote"),
-  createData("Germany", Date.now(), 83, "upvote"),
-  createData("Ireland", Date.now(), 70, "upvote"),
-  createData("Mexico", Date.now(), 65, "upvote"),
-  createData("Japan", Date.now(), 70, "upvote"),
-  createData("France", Date.now(), 20, "upvote"),
-  createData("United Kingdom", Date.now(), 95, "upvote"),
-  createData("Russia", Date.now(), 44, "upvote"),
-  createData("Nigeria", Date.now(), 96, "upvote"),
-  createData("Brazil", Date.now(), 47, "upvote"),
-];
 const useStyles = makeStyles({
   root: {
     width: "100%",
@@ -63,7 +42,7 @@ const useStyles = makeStyles({
     maxHeight: "calc(100vh - 80px)",
   },
 });
-
+const wardsarray = ["Area1", "Area2", "Area3", "Area4", "Area5", "Area6"];
 export default function StickyHeadTable() {
   const [tableRows, setTableRows] = useState([]);
   useEffect(() => {
@@ -113,29 +92,49 @@ export default function StickyHeadTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {tableRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, i) => {
+              .map((row) => {
                 return (
                   <TableRow
                     hover
                     role="checkbox"
                     tabIndex={-1}
-                    key={i}
+                    key={row._id}
                     style={{ background: "rgba(0,0,0,.5)" }}
                   >
                     <TableCell style={{ color: "white " }}>
-                      {row.name}
+                      {wardsarray[row.ward]}
                     </TableCell>
                     <TableCell style={{ color: "white " }}>
-                      {moment(row.code).format("MMMM Do YYYY")}
+                      {moment(row.regDate).format("MMMM Do YYYY")}
                     </TableCell>
                     <TableCell align={"right"}>
-                      <ProgressStatus value={row.population} />
+                      <ProgressStatus
+                        value={
+                          row.level === 0
+                            ? 25
+                            : row.level === 1
+                            ? 50
+                            : row.level === 2
+                            ? 75
+                            : 100
+                        }
+                      />
                     </TableCell>
                     <TableCell align={"right"}>
-                      <Link to={`/upvote/1`} style={{ color: "white " }}>
+                      <Link
+                        to={`/upvote/${row._id}`}
+                        style={{
+                          color: "white ",
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          textDecoration: "none",
+                          alignItems: "center",
+                        }}
+                      >
                         <EjectIcon />
+                        {row.upvotes}
                       </Link>
                     </TableCell>
                   </TableRow>
@@ -147,7 +146,7 @@ export default function StickyHeadTable() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 100]}
         component="div"
-        count={rows.length}
+        count={tableRows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}
