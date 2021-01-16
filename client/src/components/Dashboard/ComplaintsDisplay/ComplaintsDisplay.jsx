@@ -35,9 +35,9 @@ const ComplaintsDisplay = () => {
   }, []);
   return (
     <>
-      {complaints.map((complaint) => (
-        <Grid item container md={4} sm={3} xs={6} key={complaint._id}>
-          <Link to={`/complaint/${complaint._id}`} params={complaint}>
+      {complaints.map((complaint, k) => (
+        <Grid key={k} item container md={4} sm={3} xs={6} key={complaint._id}>
+          <Link to={`/complaint/${complaint._id}`}>
             <Complaint data={complaint} />
           </Link>
         </Grid>

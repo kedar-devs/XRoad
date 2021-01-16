@@ -1,48 +1,57 @@
 import { Grid } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "./ComplaintPage.css";
 import moment from "moment";
 import HorizontalLineHeading from "../HorizontalLineHeading/HorizontalLineHeading";
-const ComplaintPage = (props) => {
-  console.log(props.location.params);
-  const data = [
-    {
-      title: "Filer Name",
-      value: "Name",
-    },
-    {
-      title: "Filer Email",
-      value: "Email@gmail.com",
-    },
-    {
-      title: "Description Of Problem:",
-      value: " Lorem ipsum dolor sit amet consectetur adipisicing",
-    },
-    {
-      title: "Registered On:",
-      value: moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a"),
-    },
-    {
-      title: "Priority:",
-      value: 1,
-    },
-    {
-      title: "No Of Upvotes:",
-      value: 3,
-    },
-    {
-      title: "Ward No",
-      value: 1,
-    },
-    {
-      title: "Lattitude",
-      value: " 123456.22",
-    },
-    {
-      title: "Longitude",
-      value: " 123456.22",
-    },
-  ];
+import axios from "axios";
+
+const ComplaintPage = () => {
+  let params = useParams();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  let [apiData, setApiData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/complain/get-complain/${params.id}`)
+      .then(({ data }) => {
+        setName(data.compname.join(", "));
+        setEmail(data.comemail.join(", "));
+
+        setApiData([
+          {
+            title: "Description Of Problem:",
+            value: data.discription,
+          },
+          {
+            title: "Registered On:",
+            value: data.regDate,
+          },
+          {
+            title: "Priority:",
+            value: data.priority,
+          },
+          {
+            title: "No Of Upvotes:",
+            value: data.upvotes,
+          },
+          {
+            title: "Ward No",
+            value: data.ward,
+          },
+          {
+            title: "Lattitude",
+            value: data.lat,
+          },
+          {
+            title: "Longitude",
+            value: data.long,
+          },
+        ]);
+      });
+  }, []);
+
   return (
     <Grid
       container
@@ -59,12 +68,26 @@ const ComplaintPage = (props) => {
         direction="column"
         className="complaintpage_details"
       >
-        {data.map((d) => (
-          <h6>
-            {d.title}
-            <p className="complaintpage_details_highlight">{d.value}</p>
-          </h6>
-        ))}
+        {apiData ? (
+          <div>
+            <h6>
+              Name
+              <p className="complaintpage_details_highlight">{name}</p>
+            </h6>
+            <h6>
+              Emails
+              <p className="complaintpage_details_highlight">{email}</p>
+            </h6>
+            {apiData.map((d) => (
+              <h6>
+                {d.title}
+                <p className="complaintpage_details_highlight">{d.value}</p>
+              </h6>
+            ))}
+          </div>
+        ) : (
+          <h1>Loading...</h1>
+        )}
         {/* <p>Filer Email:-email</p>
         <p>
           Description of problem:-.
