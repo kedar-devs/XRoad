@@ -5,7 +5,11 @@ import { Link } from "react-router-dom";
 const LandingPage = () => {
   return (
     <div className="landingpage">
-      <nav></nav>
+      <nav>
+        <Link to="/login">
+          <LandingButton title="Login" />
+        </Link>
+      </nav>
       <div className="heading">
         <h2>XRoad</h2>
         <p>Lets make road building easy...</p>

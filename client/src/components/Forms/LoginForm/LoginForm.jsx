@@ -78,14 +78,17 @@ class LoginForm extends Component {
         formElementIdentifier
       ].value;
     }
-    // formData["id"] = this.props.match.params.id;
-    // axios
-    //   .put("http://localhost:5000/complain/upvote", formData)
-    //   .then((res) => console.log(res))
-    //   .catch((err) => {
-    //     console.log("There is an error here in the upvote");
-    //     console.log(err);
-    //   });
+    axios
+      .post("http://localhost:5000/admin/login", formData)
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("Xroad", res.data);
+        this.props.history.push("/authority-dashboard");
+      })
+      .catch((err) => {
+        console.log("There is an error here in the logining in the admin");
+        console.log(err);
+      });
     alert(JSON.stringify(formData, null, 2));
   };
 

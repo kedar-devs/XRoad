@@ -28,6 +28,6 @@ h1:after {
   left: 0.5em;
   margin-right: -50%;
 }
-.dark {
+.darkbg {
   background-color: rgba(0, 0, 0, 0.7);
 }
