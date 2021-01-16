@@ -82,7 +82,7 @@ class LoginForm extends Component {
       .post("http://localhost:5000/admin/login", formData)
       .then((res) => {
         console.log(res);
-        localStorage.setItem("Xroad", res.data);
+        localStorage.setItem("Xroad", JSON.stringify(res.data));
         this.props.history.push("/authority-dashboard");
       })
       .catch((err) => {

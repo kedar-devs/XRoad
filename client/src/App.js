@@ -10,6 +10,7 @@ import DisplayTable from "./components/DisplayTable/DisplayTable";
 import HorizontalLineHeading from "./components/HorizontalLineHeading/HorizontalLineHeading";
 import AuthorityDashboard from "./components/Dashboard/AuthorityDashboard";
 import LoginForm from "./components/Forms/LoginForm/LoginForm";
+import ComplaintsDisplay from "./components/Dashboard/ComplaintsDisplay/ComplaintsDisplay";
 
 function App() {
   const [currentLocation, setCurrentLocation] = useState({
@@ -33,7 +34,9 @@ function App() {
             <ComplainForm center={currentLocation} />
           </Route>
           <Route path="/upvote/:id" component={UpvoteForm} />
-          <Route path="/authority-dashboard" component={AuthorityDashboard} />
+          <Route path="/authority-dashboard">
+            <ComplaintsDisplay />
+          </Route>
           <Route path="/allcomplaints">
             <HorizontalLineHeading title={"Registred Complaints"} dark="true" />
             <DisplayTable />
