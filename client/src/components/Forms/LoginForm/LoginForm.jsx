@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import Button from "../../UI/Button/Button";
 import classes from "../UpvoteForm/UpvoteForm.module.css";
 import Input from "../../UI/Input/Input";
@@ -34,7 +35,7 @@ class LoginForm extends Component {
         touched: false,
       },
     },
-
+    done: false,
     loading: false,
     formIsValid: false,
   };
@@ -71,6 +72,7 @@ class LoginForm extends Component {
   };
 
   submitHandler = (event) => {
+    console.log(this.props);
     event.preventDefault();
     const formData = {};
     for (let formElementIdentifier in this.state.orderForm) {
@@ -82,8 +84,10 @@ class LoginForm extends Component {
       .post("http://localhost:5000/admin/login", formData)
       .then((res) => {
         console.log(res);
-        localStorage.setItem("Xroad", JSON.stringify(res.data));
-        this.props.history.push("/authority-dashboard");
+        localStorage.setItem("Xroad", res.data);
+        this.setState({ done: true });
+        // console.log(this.props);
+        // this.props.history.push("/authority-dashboard");
       })
       .catch((err) => {
         console.log("There is an error here in the logining in the admin");
@@ -125,6 +129,8 @@ class LoginForm extends Component {
     if (this.state.loading) {
       form = <Spinner />;
     }
+
+    if (this.state.done) return <Redirect to="/authority-dashboard" />;
 
     return (
       <div className={classes.upvotingform}>
