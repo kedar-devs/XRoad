@@ -94,7 +94,7 @@ class CitizenForm extends Component {
     event.preventDefault();
     const data = new FormData();
     data.set("encType", "multipart/form-data");
-    data.append("id", this.props.match.params.id);
+    data.append("id", this.props.id);
     data.append("action", this.state.orderForm.action.value);
     data.append("officer", this.state.orderForm.officer.value);
     console.log(this.state.image);
