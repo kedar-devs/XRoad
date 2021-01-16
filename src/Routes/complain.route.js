@@ -61,7 +61,7 @@ router.post("/addcomplain", (req, res) => {
   uploadPath = __dirname + "/Data/" + sampleFile.name;
   const priority = req.body.priority;
   const upvotes = 1;
-  const level = 0;
+  const level = 1;
   const discription = req.body.description;
   const lat = req.body.latitude;
   const long = req.body.longitude;
@@ -145,6 +145,19 @@ router.get("/get-levelwise/:level", (req, res) => {
     .catch((err) => {
       res.status(500).send("Error:" + err.message);
     });
+});
+
+router.get("/get-all-coordinates", async (req, res) => {
+  let cor = "";
+  const complains = await Complain.find({});
+  for (i = 0; i < complains.length; i++) {
+    if (i === complains.length - 1) {
+      cor += complains[i].lat + "," + complains[i].long;
+    } else {
+      cor += complains[i].lat + "," + complains[i].long + "|";
+    }
+  }
+  res.status(200).json({ corstring: cor });
 });
 
 router.put("/upvote", (req, res) => {

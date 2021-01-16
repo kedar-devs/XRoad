@@ -90,6 +90,7 @@ class CitizenForm extends Component {
     loading: false,
     formIsValid: false,
     image: null,
+    coorstr: "",
   };
 
   componentDidMount() {
@@ -159,6 +160,9 @@ class CitizenForm extends Component {
     // 	].value
     // }
     // Image Upload
+    axios
+      .get("http://localhost:5000/complain/get-all-coordinates")
+      .then((res) => console.log(res.data));
     const image = this.state.image;
     const data = new FormData();
     data.set("encType", "multipart/form-data");
@@ -171,7 +175,7 @@ class CitizenForm extends Component {
     data.append("description", this.state.orderForm.description.value);
     data.append("file", this.state.image);
     const multerimage = URL.createObjectURL(this.state.image);
-    // alert(multerimage);
+
     axios
       .post("http://localhost:5000/complain/addcomplain", data)
       .then(() => alert("Complain registered successfully"))
