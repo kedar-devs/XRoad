@@ -4,7 +4,7 @@ import classes from "../CitizenForm/CitizenForm.module.css";
 import Input from "../../UI/Input/Input";
 import Spinner from "../../UI/Spinner/Spinner";
 import axios from "axios";
-import Map from "../../Map";
+
 class CitizenForm extends Component {
   state = {
     orderForm: {
@@ -26,7 +26,7 @@ class CitizenForm extends Component {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Position of Authority",
+          placeholder: "Name",
         },
         value: "",
         validation: {
@@ -94,6 +94,7 @@ class CitizenForm extends Component {
     event.preventDefault();
     const data = new FormData();
     data.set("encType", "multipart/form-data");
+    data.append("id", this.props.match.params.id);
     data.append("action", this.state.orderForm.action.value);
     data.append("officer", this.state.orderForm.officer.value);
     console.log(this.state.image);

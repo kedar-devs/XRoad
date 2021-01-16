@@ -327,6 +327,7 @@ router.get("/getlevel/:level", (req, res) => {
 });
 // Naya hai yah
 router.put("/putaction", (req, res) => {
+  console.log(req.body.id);
   // console.log(req.body);
   // console.log(req.files);
   let sampleFile;
@@ -335,7 +336,6 @@ router.put("/putaction", (req, res) => {
   uploadPath = __dirname + "/Data/" + sampleFile.name;
   sampleFile.mv(uploadPath, function (err) {
     if (err) return res.status(500).send(err);
-
     Complain.findOneAndUpdate(
       { _id: req.body.id },
       {
@@ -349,31 +349,31 @@ router.put("/putaction", (req, res) => {
       }
     )
       .then((result) => {
-        // for (var i = 0; i < result.comemail.length; i++) {
-        //   transporter.sendMail(
-        //     {
-        //       to: result.comemail[i],
-        //       from: "savishkargec@gmail.com",
-        //       subject: "Action Taken",
-        //       html: `
-        //           <p> Dear user, the complain registered by you has been officially looked into and a pertiular action was taken
-        //           <br />Action:${req.body.action}<br />
-        //           Officer who took the Action:${req.body.officer}
-        //           <br />
-        //           Thank you
-        //           </p>
-        //           `,
-        //     },
-        //     (err, result) => {
-        //       if (err) {
-        //         console.log(err);
-        //       } else {
-        //         res.send("success");
-        //       }
-        //       transporter.close();
-        //     }
-        //   );
-        // }
+        for (var i = 0; i < result.comemail.length; i++) {
+          transporter.sendMail(
+            {
+              to: result.comemail[i],
+              from: "savishkargec@gmail.com",
+              subject: "Action Taken",
+              html: `
+                  <p> Dear user, the complain registered by you has been officially looked into and a pertiular action was taken
+                  <br />Action:${req.body.action}<br />
+                  Officer who took the Action:${req.body.officer}
+                  <br />
+                  Thank you
+                  </p>
+                  `,
+            },
+            (err, result) => {
+              if (err) {
+                console.log(err);
+              } else {
+                res.send("success");
+              }
+              transporter.close();
+            }
+          );
+        }
         res.status(200).json("ACTION Added successfully");
       })
       .catch((err) => {

@@ -41,7 +41,7 @@ function App() {
           <Route path="/login">
             <LoginForm />
           </Route>
-          <Route path="/view-and-proceed" component={ProcessPage} />
+          <Route path="/view-and-proceed/:id" component={ProcessPage} />
         </Switch>
       </Router>
     </div>
