@@ -1,6 +1,15 @@
 const { route } = require("../app");
 const Complain = require("../Model/Complain.model");
 const router = require("express").Router();
+const nodemailer=require('nodemailer');
+const transporter=nodemailer.createTransport({
+    service:'Gmail' ,
+    
+    auth:{
+        user:'savishkargec@gmail.com',
+        pass:process.env.GMAIL_KEY
+   }
+})
 router.get("/getLocation", (req, res) => {
   Complain.find()
     .then((complain) => {
@@ -220,6 +229,31 @@ router.put('/putaction',(req,res)=>{
     }
     }})
     .then(result => {
+        for(var i=0;i<result.comemail.length;i++){
+            transporter.sendMail({
+                to:result.comemail[i],
+                from:"savishkargec@gmail.com",
+                subject:"Action Taken",
+                html:`
+                <p> Dear user, the complain registered by you has been officially looked into and a pertiular action was taken
+                <br />Action:${req.body.action}<br />
+                Officer who took the Action:${req.body.officer}
+                <br />
+                Thank you 
+                </p>
+                `
+
+            },(err,result)=>{
+                if(err){
+                    console.log(err)
+                }
+                else{
+                    res.send("success")
+                }
+                transporter.close()
+            })
+        } 
+        })
         console.log("inthen")
         console.log(result)
         res.status(200).send('ACTION Added successfully')
@@ -230,7 +264,7 @@ router.put('/putaction',(req,res)=>{
         res.status(500).send(err)
     })
 })
-})
+
 //Naya hai yaahh
 router.get('/getAction/:id',(req, res) =>{
     Complain.findById(req.params.id)
