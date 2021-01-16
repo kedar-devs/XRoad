@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const path = require("path");
 const saltRound = 8;
+const orderid = require('order-id')('mysecret');
+const id = orderid.generate();
 //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
 const nodemailer = require("nodemailer");
 router.route('/add').post((req,res)=>{
@@ -18,7 +20,7 @@ router.route('/add').post((req,res)=>{
             if(req.body==null){
                 return 
             }
-            const Id=req.body.id
+            const Id=orderid.getTime(id)
             const email=req.body.email            
             const password=req.body.password
             const level=req.body.level

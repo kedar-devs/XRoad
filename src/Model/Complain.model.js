@@ -7,7 +7,7 @@ const ActionSchema=Schema({
 })
 const ComplainBox=Schema({
     priority:{type:Number,required:true},
-    status:{type:Number, required:true},
+    status:{type:Number},
     level:{type:Number, required:true},
     upvotes:{type:Number, required:true},
     discription:{type:String, required:true},
