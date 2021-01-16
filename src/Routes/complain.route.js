@@ -71,7 +71,7 @@ router.post("/addcomplain", (req, res) => {
   const upvotes = 1;
   const level = 0;
   const discription = req.body.description;
-  const ward=req.body.ward
+  const ward = req.body.ward;
   const lat = req.body.latitude;
   const long = req.body.longitude;
   const img = uploadPath;
@@ -86,12 +86,12 @@ router.post("/addcomplain", (req, res) => {
       console.log(comemail, compname, img);
       const NewComplain = new Complain({
         priority,
-        status,
         upvotes,
         discription,
         ward,
         level,
         lat,
+        ward,
         long,
         img,
         comemail,
@@ -101,7 +101,7 @@ router.post("/addcomplain", (req, res) => {
       console.log(NewComplain);
       NewComplain.save()
         .then(() => {
-          //   return res.status(200).send("Complain Registered Sucessfully");
+          res.status(200).send("Complain Registered Sucessfully");
         })
         .catch((err) => {
           console.log(err);
@@ -156,6 +156,19 @@ router.get("/get-levelwise/:level", (req, res) => {
     });
 });
 
+router.get("/get-all-coordinates", async (req, res) => {
+  let cor = "";
+  const complains = await Complain.find({});
+  for (i = 0; i < complains.length; i++) {
+    if (i === complains.length - 1) {
+      cor += complains[i].lat + "," + complains[i].long;
+    } else {
+      cor += complains[i].lat + "," + complains[i].long + "|";
+    }
+  }
+  res.status(200).json({ corstring: cor });
+});
+
 router.put("/upvote", (req, res) => {
   Complain.findById(req.body.id).then((complain) => {
     console.log(complain);
@@ -207,11 +220,10 @@ router.get("/getall", (req, res) => {
 });
 
 router.get("/getlevel/:level", (req, res) => {
-  Complain.find({ level: req.params.level })
-    .then((complain) => {
-      res.status(200).send(complain);
-    })
-})
+  Complain.find({ level: req.params.level }).then((complain) => {
+    res.status(200).send(complain);
+  });
+});
 // Naya hai yah
 router.put('/putaction',(req,res)=>{
     let sampleFile
@@ -266,17 +278,17 @@ router.put('/putaction',(req,res)=>{
 })
 
 //Naya hai yaahh
-router.get('/getAction/:id',(req, res) =>{
-    Complain.findById(req.params.id)
-    .then(complain=> {
-        console.log(complain)
-      var ActionArray = complain.ActionTaken
+router.get("/getAction/:id", (req, res) => {
+  Complain.findById(req.params.id)
+    .then((complain) => {
+      console.log(complain);
+      var ActionArray = complain.ActionTaken;
       res.status(200).send({ ActionArray });
     })
     .catch((err) => {
       res.status(500).send("Error: " + err.message);
     });
-})
+});
 
 router.get("/getstats", async (req, res) => {
   const passed = await Complain.find({
