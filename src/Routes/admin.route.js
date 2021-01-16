@@ -24,8 +24,10 @@ router.route('/add').post((req,res)=>{
             const level=req.body.level
             const designation=req.body.designation
             const ward=req.body.ward
+            const requestHandled=0
+            const unhandled=0
             const resetToken=' '
-            const newUser=new Authority({Id,email,password,level,designation,ward,resetToken})
+            const newUser=new Authority({Id,email,password,level,designation,ward,requestHandled,unhandled,resetToken})
             bcrypt.hash(newUser.password,saltRound,(err,hash)=>{
                 if (err) throw err;
                 newUser.password=hash;
@@ -54,6 +56,34 @@ router.route('/add').post((req,res)=>{
     }
   });
 });
+//Naya hai Yahh
+router.put('/actionTaken',(req, res)=>{
+  Authority.findById(req.body.id)
+  .then(admin=>{
+    admin.requestHandled+=1
+    admin.save()
+    .then(result=>{
+      res.status(200).send('Result')
+    })
+    .catch(error=>{
+      res.status(500).send('Error: ' + error)
+    })
+  })
+})
+router.put('/actionNotTaken',(req, res)=>{
+  Authority.findById(req.body.id)
+  .then(admin=>{
+    admin.unhandled=req.body.unhandled
+    admin.save()
+    .then(result=>{
+      res.status(200).send('Result')
+    })
+    .catch(error=>{
+      res.status(500).send('Error: ' + error)
+    })
+  })
+})
+//
 router.get("/user/:id", (req, res) => {
   Authority.findById(req.params.id)
     .then((user) => {

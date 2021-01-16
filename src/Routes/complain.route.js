@@ -61,8 +61,8 @@ router.post("/addcomplain", (req, res) => {
   const priority = req.body.priority;
   const upvotes = 1;
   const level = 0;
-  const ward = req.params.ward;
   const discription = req.body.description;
+  const ward=req.body.ward
   const lat = req.body.latitude;
   const long = req.body.longitude;
   const img = uploadPath;
@@ -80,6 +80,7 @@ router.post("/addcomplain", (req, res) => {
         status,
         upvotes,
         discription,
+        ward,
         level,
         lat,
         long,
@@ -202,6 +203,7 @@ router.get("/getlevel/:level", (req, res) => {
       res.status(200).send(complain);
     })
 })
+// Naya hai yah
 router.put('/putaction',(req,res)=>{
     let sampleFile
     let uploadPath
@@ -229,6 +231,7 @@ router.put('/putaction',(req,res)=>{
     })
 })
 })
+//Naya hai yaahh
 router.get('/getAction/:id',(req, res) =>{
     Complain.findById(req.params.id)
     .then(complain=> {
@@ -240,6 +243,7 @@ router.get('/getAction/:id',(req, res) =>{
       res.status(500).send("Error: " + err.message);
     });
 })
+
 router.get("/getstats", async (req, res) => {
   const passed = await Complain.find({
     level: 2,

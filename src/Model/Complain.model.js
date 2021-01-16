@@ -11,6 +11,7 @@ const ComplainBox=Schema({
     level:{type:Number, required:true},
     upvotes:{type:Number, required:true},
     discription:{type:String, required:true},
+    ward:{type:Number, required:true},
     lat:{type:String, required:true},
     long:{type:String, required:true},
     img:{type:String,required:true},
