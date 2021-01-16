@@ -6,13 +6,81 @@ const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "Gmail",
-
   auth: {
     user: "savishkargec@gmail.com",
-    pass: process.env.GMAIL_KEY,
-  },
+    pass: "for@*web45",
+  }
 });
-router.get("/getLocation", (req, res) => {
+let cron=require('node-cron')
+cron.schedule('2-4 30-35 17 1-31 * *', (req,res) =>{
+  Complain.find()
+  .then(complain=>{
+    console.log(complain)
+    
+      const date2=new Date()
+      var diff
+      for(var i=0;i<complain.length;i++){
+        diff=date2-complain[i].regDate
+        diff=diff/(1000*60*60*24)
+        console.log(diff)
+        if(diff>-14 && complain[i].level==0){
+          complain[i].level+=1
+          transporter.sendMail(
+            {
+              //to: complain[i].comemail[0],
+              to:"kedard249.kd@gmail.com",
+              from: "savishkargec@gmail.com",
+              subject: "Complain Not looked up",
+              html: `
+                  <p> Complain filed by you has not been yet looked up by the wrd authority hence we have decided to push your complain to the higher authority, what actions shall be taken
+                  <br />
+                  Thank you 
+                  </p>
+                  `,
+            },
+            (err, _result) => {
+              if (err) {
+                console.log(err);
+              } else {
+                res.send("success");
+              }
+              transporter.close();
+            });
+          }
+          if(diff>-7 && complain[i].level==0)
+          {
+            Authority.findOne({ward:complain[i].ward})
+            .then(_admin=>{
+              transporter.sendMail(
+                {
+                  //to: admin.email,
+                  to:"kedard249.kd@gmail.com",
+                  from: "savishkargec@gmail.com",
+                  subject: "Complain Not looked up",
+                  html: `
+                      <p>Dear sir,<br /> A complain was made a week ago which hasn't been looked up to, please do something regarding it"
+                      <br />
+                      Thank you 
+                      </p>
+                      `,
+                },
+                (err, _result) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    res.send("success");
+                  }
+                  transporter.close();
+                });
+            })
+          }
+        }
+        
+
+    })
+
+})
+router.get("/getLocation", (_req, res) => {
   Complain.find()
     .then((complain) => {
       var location = complain.map((cmp) => {
@@ -119,7 +187,7 @@ router.post("/addcomplain", (req, res) => {
                     </p>
                     `,
               },
-              (err, result) => {
+              (err, _result) => {
                 if (err) {
                   console.log(err);
                 } else {
@@ -247,7 +315,7 @@ router.put("/upvote", (req, res) => {
             </p>
             `,
           },
-          (err, result) => {
+          (err, _result) => {
             if (err) {
               console.log(err);
             } else {
@@ -293,7 +361,7 @@ router.put("/levelUpdate", (req, res) => {
                 </p>
                 `,
             },
-            (err, result) => {
+            (err, _result) => {
               if (err) {
                 console.log(err);
               } else {
@@ -310,7 +378,7 @@ router.put("/levelUpdate", (req, res) => {
       });
   });
 });
-router.get("/getall", (req, res) => {
+router.get("/getall", (_req, res) => {
   Complain.find()
     .then((complain) => {
       res.status(200).send(complain);
@@ -349,31 +417,32 @@ router.put("/putaction", (req, res) => {
       }
     )
       .then((result) => {
-        // for (var i = 0; i < result.comemail.length; i++) {
-        //   transporter.sendMail(
-        //     {
-        //       to: result.comemail[i],
-        //       from: "savishkargec@gmail.com",
-        //       subject: "Action Taken",
-        //       html: `
-        //           <p> Dear user, the complain registered by you has been officially looked into and a pertiular action was taken
-        //           <br />Action:${req.body.action}<br />
-        //           Officer who took the Action:${req.body.officer}
-        //           <br />
-        //           Thank you
-        //           </p>
-        //           `,
-        //     },
-        //     (err, result) => {
-        //       if (err) {
-        //         console.log(err);
-        //       } else {
-        //         res.send("success");
-        //       }
-        //       transporter.close();
-        //     }
-        //   );
-        // }
+
+        for (var i = 0; i < result.comemail.length; i++) {
+          transporter.sendMail(
+            {
+              to: result.comemail[i],
+              from: "savishkargec@gmail.com",
+              subject: "Action Taken",
+              html: `
+                  <p> Dear user, the complain registered by you has been officially looked into and a pertiular action was taken
+                  <br />Action:${req.body.action}<br />
+                  Officer who took the Action:${req.body.officer}
+                  <br />
+                  Thank you
+                  </p>
+                  `,
+            },
+            (err, _result) => {
+              if (err) {
+                console.log(err);
+              } else {
+                res.send("success");
+              }
+              transporter.close();
+            }
+          );
+        }
         res.status(200).json("ACTION Added successfully");
       })
       .catch((err) => {
