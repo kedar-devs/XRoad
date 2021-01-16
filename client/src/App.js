@@ -8,6 +8,7 @@ import GetUserLocation from "./components/GetUserLocation";
 import DisplayTable from "./components/DisplayTable/DisplayTable";
 import HorizontalLineHeading from "./components/HorizontalLineHeading/HorizontalLineHeading";
 import AuthorityDashboard from "./components/Dashboard/AuthorityDashboard";
+import ProcessPage from "./components/Forms/ProcesForm/ProcessForm";
 import LoginForm from "./components/Forms/LoginForm/LoginForm";
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path="/login">
             <LoginForm />
           </Route>
+          <Route path="/view-and-proceed" component={ProcessPage} />
         </Switch>
       </Router>
     </div>
