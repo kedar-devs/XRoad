@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LandingPage from "./components/Landingpage/LandingPage";
 import ComplainForm from "./components/Forms/CitizenForm/CitizenForm";
 import UpvoteForm from "./components/Forms/UpvoteForm/UpvoteForm";
-import Map from "./components/Map";
 import GetUserLocation from "./components/GetUserLocation";
 import DisplayTable from "./components/DisplayTable/DisplayTable";
 import HorizontalLineHeading from "./components/HorizontalLineHeading/HorizontalLineHeading";
