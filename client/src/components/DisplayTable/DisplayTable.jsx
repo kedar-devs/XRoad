@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -12,6 +12,7 @@ import EjectIcon from "@material-ui/icons/Eject";
 import ProgressStatus from "./ProgressStatus";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import axios from "axios";
 const columns = [
   { id: "name", label: "Area", minWidth: 150 },
   { id: "code", label: "Date", minWidth: 100 },
@@ -52,7 +53,6 @@ const rows = [
   createData("Nigeria", Date.now(), 96, "upvote"),
   createData("Brazil", Date.now(), 47, "upvote"),
 ];
-
 const useStyles = makeStyles({
   root: {
     width: "100%",
@@ -65,6 +65,19 @@ const useStyles = makeStyles({
 });
 
 export default function StickyHeadTable() {
+  const [tableRows, setTableRows] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/complain/getall")
+      .then((res) => {
+        console.log(res.data);
+        setTableRows(res.data);
+      })
+      .catch((err) => {
+        console.log("There is an error here in retriving all the complaints");
+        console.log(err);
+      });
+  }, []);
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
