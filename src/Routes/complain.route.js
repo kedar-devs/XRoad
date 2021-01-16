@@ -27,8 +27,8 @@ cron.schedule('2-4 30-35 17 1-31 * *', (req,res) =>{
           complain[i].level+=1
           transporter.sendMail(
             {
-              //to: complain[i].comemail[0],
-              to:"kedard249.kd@gmail.com",
+              to: complain[i].comemail[0],
+              //to:"kedard249.kd@gmail.com",
               from: "savishkargec@gmail.com",
               subject: "Complain Not looked up",
               html: `
@@ -53,8 +53,8 @@ cron.schedule('2-4 30-35 17 1-31 * *', (req,res) =>{
             .then(_admin=>{
               transporter.sendMail(
                 {
-                  //to: admin.email,
-                  to:"kedard249.kd@gmail.com",
+                  to: admin.email,
+                  //to:"kedard249.kd@gmail.com",
                   from: "savishkargec@gmail.com",
                   subject: "Complain Not looked up",
                   html: `
@@ -395,6 +395,7 @@ router.get("/getlevel/:level", (req, res) => {
 });
 // Naya hai yah
 router.put("/putaction", (req, res) => {
+  console.log(req.body.id);
   // console.log(req.body);
   // console.log(req.files);
   let sampleFile;
@@ -403,7 +404,6 @@ router.put("/putaction", (req, res) => {
   uploadPath = __dirname + "/Data/" + sampleFile.name;
   sampleFile.mv(uploadPath, function (err) {
     if (err) return res.status(500).send(err);
-
     Complain.findOneAndUpdate(
       { _id: req.body.id },
       {
@@ -417,7 +417,6 @@ router.put("/putaction", (req, res) => {
       }
     )
       .then((result) => {
-
         for (var i = 0; i < result.comemail.length; i++) {
           transporter.sendMail(
             {
@@ -433,7 +432,7 @@ router.put("/putaction", (req, res) => {
                   </p>
                   `,
             },
-            (err, _result) => {
+            (err, result) => {
               if (err) {
                 console.log(err);
               } else {

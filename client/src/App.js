@@ -10,6 +10,8 @@ import HorizontalLineHeading from "./components/HorizontalLineHeading/Horizontal
 import AuthorityDashboard from "./components/Dashboard/AuthorityDashboard";
 import ProcessPage from "./components/Forms/ProcesForm/ProcessForm";
 import LoginForm from "./components/Forms/LoginForm/LoginForm";
+import ComplaintsDisplay from "./components/Dashboard/ComplaintsDisplay/ComplaintsDisplay";
+import ComplaintPage from "./components/ComplaintPage/ComplaintPage";
 
 function App() {
   const [currentLocation, setCurrentLocation] = useState({
@@ -33,7 +35,9 @@ function App() {
             <ComplainForm center={currentLocation} />
           </Route>
           <Route path="/upvote/:id" component={UpvoteForm} />
-          <Route path="/authority-dashboard" component={AuthorityDashboard} />
+          <Route path="/authority-dashboard">
+            <AuthorityDashboard />
+          </Route>
           <Route path="/allcomplaints">
             <HorizontalLineHeading title={"Registred Complaints"} dark="true" />
             <DisplayTable />
@@ -41,7 +45,10 @@ function App() {
           <Route path="/login">
             <LoginForm />
           </Route>
-          <Route path="/view-and-proceed" component={ProcessPage} />
+          <Route path="/complaint/:id">
+            <ComplaintPage />
+          </Route>
+          <Route path="/view-and-proceed/:id" component={ProcessPage} />
         </Switch>
       </Router>
     </div>

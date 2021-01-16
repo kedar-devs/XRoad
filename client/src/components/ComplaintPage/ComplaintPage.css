@@ -1,0 +1,24 @@
+.complaintpage {
+  background-color: rgba(0, 0, 0, 0.4);
+  min-height: 100vh;
+}
+.complaintpage_details p,
+.complaintpage_details h6 {
+  color: aliceblue;
+  margin: 10px;
+  font-weight: 500;
+  font-size: 15px;
+  text-transform: capitalize;
+}
+.complaintpage img {
+  width: 400px;
+  border-radius: 20px;
+  padding: 10px;
+  border: 1px solid whitesmoke;
+  margin: auto;
+}
+.complaintpage_details_highlight {
+  font-weight: 700 !important;
+  display: inline;
+  font-size: 17px !important;
+}
