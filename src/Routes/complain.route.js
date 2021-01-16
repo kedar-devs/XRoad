@@ -1,6 +1,16 @@
 const { route } = require("../app");
 const Complain = require("../Model/Complain.model");
+const axios = require("axios");
 const router = require("express").Router();
+const nodemailer=require('nodemailer');
+const transporter=nodemailer.createTransport({
+    service:'Gmail' ,
+    
+    auth:{
+        user:'savishkargec@gmail.com',
+        pass:process.env.GMAIL_KEY
+   }
+})
 router.get("/getLocation", (req, res) => {
   Complain.find()
     .then((complain) => {
@@ -147,7 +157,10 @@ router.get("/get-levelwise/:level", (req, res) => {
     });
 });
 
-router.get("/get-all-coordinates", async (req, res) => {
+router.post("/check-distance", async (req, res) => {
+  console.log(req.body);
+  lat = req.body.lat;
+  long = req.body.long;
   let cor = "";
   const complains = await Complain.find({});
   for (i = 0; i < complains.length; i++) {
@@ -157,7 +170,24 @@ router.get("/get-all-coordinates", async (req, res) => {
       cor += complains[i].lat + "," + complains[i].long + "|";
     }
   }
-  res.status(200).json({ corstring: cor });
+  const { data } = await axios.post(
+    `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${cor}&destinations=${lat},${long}&departure_time=now&key=${process.env.API_KEY}`
+  );
+  const rows = data.rows;
+
+  let closest = 0;
+  let distance = rows[0].elements[0].distance.value;
+  for (i = 0; i < rows.length; i++) {
+    if (rows[i].elements[0].distance.value < distance) {
+      distance = rows[i].elements[0].distance.value;
+      closestDriver = i;
+    }
+  }
+  if (distance > 250) {
+    res.status(200).json({ complainstatus: "Registered" });
+  } else {
+    res.status(200).json({ complainstatus: "Not Registerd" });
+  }
 });
 
 router.put("/upvote", (req, res) => {
@@ -218,38 +248,58 @@ router.get("/getlevel/:level", (req, res) => {
   });
 });
 // Naya hai yah
-router.put("/putaction", (req, res) => {
-  let sampleFile;
-  let uploadPath;
-  sampleFile = req.files.pdf;
-  uploadPath = __dirname + "/Data/" + sampleFile.name;
-  sampleFile.mv(uploadPath, function (err) {
-    if (err) return res.status(500).send(err);
+router.put('/putaction',(req,res)=>{
+    let sampleFile
+    let uploadPath
+    sampleFile = req.files.pdf
+    uploadPath = __dirname +'/Data/' + sampleFile.name
+    sampleFile.mv(uploadPath, function(err) {
+        if (err)
+          return res.status(500).send(err);
+        
+    Complain.findOneAndUpdate({_id:req.body.id},{$push:{"ActionTaken":{
+        "action":req.body.action,
+        "link":uploadPath,
+        "officer":req.body.officer
+    }
+    }})
+    .then(result => {
+        for(var i=0;i<result.comemail.length;i++){
+            transporter.sendMail({
+                to:result.comemail[i],
+                from:"savishkargec@gmail.com",
+                subject:"Action Taken",
+                html:`
+                <p> Dear user, the complain registered by you has been officially looked into and a pertiular action was taken
+                <br />Action:${req.body.action}<br />
+                Officer who took the Action:${req.body.officer}
+                <br />
+                Thank you 
+                </p>
+                `
 
-    Complain.findOneAndUpdate(
-      { _id: req.body.id },
-      {
-        $push: {
-          ActionTaken: {
-            action: req.body.action,
-            link: uploadPath,
-            officer: req.body.officer,
-          },
-        },
-      }
-    )
-      .then((result) => {
-        console.log("inthen");
-        console.log(result);
-        res.status(200).send("ACTION Added successfully");
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log("inerror");
-        res.status(500).send(err);
-      });
-  });
-});
+            },(err,result)=>{
+                if(err){
+                    console.log(err)
+                }
+                else{
+                    res.send("success")
+                }
+                transporter.close()
+            })
+        } 
+        })
+        console.log("inthen")
+        console.log(result)
+        res.status(200).send('ACTION Added successfully')
+    })
+    .catch(err =>{
+        console.log(err)
+        console.log("inerror")
+        res.status(500).send(err)
+    })
+})
+
 //Naya hai yaahh
 router.get("/getAction/:id", (req, res) => {
   Complain.findById(req.params.id)
