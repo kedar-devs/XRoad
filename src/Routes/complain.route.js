@@ -135,8 +135,9 @@ router.post("/addcomplain", (req, res) => {
   let uploadPath;
   var comemail = [];
   var compname = [];
+  const url=req.protocol+'://'+req.get('host')
   sampleFile = req.files.file;
-  uploadPath = __dirname + "/Data/" + sampleFile.name;
+  uploadPath = url + "/Data/" + sampleFile.name;
   const priority = req.body.priority;
   const upvotes = 1;
   const level = 0;
@@ -407,9 +408,10 @@ router.put("/putaction", (req, res) => {
   // console.log(req.body);
   // console.log(req.files);
   let sampleFile;
+  const url=req.protocol+'://'+req.get('host')
   let uploadPath;
   sampleFile = req.files.pdf;
-  uploadPath = __dirname + "/Data/" + sampleFile.name;
+  uploadPath = url + "/Data/" + sampleFile.name;
   sampleFile.mv(uploadPath, function (err) {
     if (err) return res.status(500).send(err);
     Complain.findOneAndUpdate(
