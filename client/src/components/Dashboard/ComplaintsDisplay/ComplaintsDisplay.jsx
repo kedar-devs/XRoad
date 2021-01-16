@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Complaint from "./Complaint/Complaint";
-import "./ComplaintsDisplay.css";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 const ComplaintsDisplay = () => {
   const history = useHistory();
   const [complaints, setComplaints] = useState([]);
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("Xroad"));
-    // console.log(JSON.parse(token));
     if (!token) history.push("/login");
     if (token.level === "1") {
       axios
@@ -39,7 +37,9 @@ const ComplaintsDisplay = () => {
     <>
       {complaints.map((complaint) => (
         <Grid item container md={4} sm={3} xs={6} key={complaint._id}>
-          <Complaint data={complaint} />
+          <Link to={`/complaint/${complaint._id}`} params={complaint}>
+            <Complaint data={complaint} />
+          </Link>
         </Grid>
       ))}
     </>

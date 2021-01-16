@@ -1,14 +1,9 @@
 import React from 'react'
 import { Doughnut, defaults } from 'react-chartjs-2'
 
-const status = {
-	x: ['Pending', 'Level-1', 'Level-2', 'Completed'],
-	y: [12, 5, 3, 8],
-}
-
 defaults.global.defaultFontColor = 'white'
 
-function DoughnutChart() {
+function DoughnutChart({ status }) {
 	const data = {
 		labels: status.x,
 		datasets: [
