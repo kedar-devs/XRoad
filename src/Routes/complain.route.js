@@ -9,34 +9,58 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: "savishkargec@gmail.com",
     pass: "for@*web45",
-  }
+  },
 });
-let cron=require('node-cron')
-cron.schedule('2-4 30-35 17 1-31 * *', (req,res) =>{
-  Complain.find()
-  .then(complain=>{
-    console.log(complain)
-    
-      const date2=new Date()
-      var diff
-      for(var i=0;i<complain.length;i++){
-        diff=date2-complain[i].regDate
-        diff=diff/(1000*60*60*24)
-        console.log(diff)
-        if(diff>-14 && complain[i].level==0){
-          complain[i].level+=1
-          transporter.sendMail(
-            {
-              to: complain[i].comemail[0],
-              //to:"kedard249.kd@gmail.com",
-              from: "savishkargec@gmail.com",
-              subject: "Complain Not looked up",
-              html: `
+let cron = require("node-cron");
+cron.schedule("2-4 30-35 17 1-31 * *", (req, res) => {
+  Complain.find().then((complain) => {
+    console.log(complain);
+
+    const date2 = new Date();
+    var diff;
+    for (var i = 0; i < complain.length; i++) {
+      diff = date2 - complain[i].regDate;
+      diff = diff / (1000 * 60 * 60 * 24);
+      console.log(diff);
+      if (diff > -14 && complain[i].level == 0) {
+        complain[i].level += 1;
+        transporter.sendMail(
+          {
+            to: complain[i].comemail[0],
+            //to:"kedard249.kd@gmail.com",
+            from: "savishkargec@gmail.com",
+            subject: "Complain Not looked up",
+            html: `
                   <p> Complain filed by you has not been yet looked up by the wrd authority hence we have decided to push your complain to the higher authority, what actions shall be taken
                   <br />
                   Thank you 
                   </p>
                   `,
+          },
+          (err, _result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.send("success");
+            }
+            transporter.close();
+          }
+        );
+      }
+      if (diff > -7 && complain[i].level == 0) {
+        Authority.findOne({ ward: complain[i].ward }).then((_admin) => {
+          transporter.sendMail(
+            {
+              to: admin.email,
+              //to:"kedard249.kd@gmail.com",
+              from: "savishkargec@gmail.com",
+              subject: "Complain Not looked up",
+              html: `
+                      <p>Dear sir,<br /> A complain was made a week ago which hasn't been looked up to, please do something regarding it"
+                      <br />
+                      Thank you 
+                      </p>
+                      `,
             },
             (err, _result) => {
               if (err) {
@@ -45,41 +69,13 @@ cron.schedule('2-4 30-35 17 1-31 * *', (req,res) =>{
                 res.send("success");
               }
               transporter.close();
-            });
-          }
-          if(diff>-7 && complain[i].level==0)
-          {
-            Authority.findOne({ward:complain[i].ward})
-            .then(_admin=>{
-              transporter.sendMail(
-                {
-                  to: admin.email,
-                  //to:"kedard249.kd@gmail.com",
-                  from: "savishkargec@gmail.com",
-                  subject: "Complain Not looked up",
-                  html: `
-                      <p>Dear sir,<br /> A complain was made a week ago which hasn't been looked up to, please do something regarding it"
-                      <br />
-                      Thank you 
-                      </p>
-                      `,
-                },
-                (err, _result) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    res.send("success");
-                  }
-                  transporter.close();
-                });
-            })
-          }
-        }
-        
-
-    })
-
-})
+            }
+          );
+        });
+      }
+    }
+  });
+});
 router.get("/getLocation", (_req, res) => {
   Complain.find()
     .then((complain) => {
@@ -126,6 +122,114 @@ router.post("/checklocation", (req, res) => {
     }
   });
 });
+// router.post("/addcomplain", (req, res) => {
+//   console.log(req.body, req.files);
+//   if (!req.files || Object.keys(req.files).length === 0) {
+//     return res.status(400).send("No files were uploaded.");
+//   }
+//   let sampleFile;
+//   let uploadPath;
+//   var comemail = [];
+//   var compname = [];
+//   const url=req.protocol+'://'+req.get('host')
+//   sampleFile = req.files.file;
+//   uploadPath = url + "/Data/" + sampleFile.name;
+//   const priority = req.body.priority;
+//   const upvotes = 1;
+//   const level = 0;
+//   const discription = req.body.description;
+//   const ward = req.body.ward;
+//   const lat = req.body.latitude;
+//   const long = req.body.longitude;
+//   const img = uploadPath;
+//   sampleFile.mv(uploadPath, function (err) {
+//     if (err) {
+//       console.log(err);
+//       //   return res.status(500).send(err);
+//     } else {
+//       comemail.push(req.body.email);
+//       compname.push(req.body.name);
+//       const regDate = Date(req.body.date);
+//       console.log(comemail, compname, img);
+//       const NewComplain = new Complain({
+//         priority,
+//         upvotes,
+//         discription,
+//         ward,
+//         level,
+//         lat,
+//         ward,
+//         long,
+//         img,
+//         comemail,
+//         compname,
+//         regDate,
+//       });
+//       console.log(NewComplain);
+//       NewComplain.save()
+//         .then((result) => {
+//           Authority.find({
+//             level: result.level + 1,
+//             ward: result.ward,
+//           }).then((admin) => {
+//             transporter.sendMail(
+//               {
+//                 to: admin.email,
+//                 from: "savishkargec@gmail.com",
+//                 subject: "Complain Fired",
+//                 html: `
+//                     <p> A Complain has been fired by the locals of your ward and requires your attention please attend to it
+//                     <br />
+//                     Thank you
+//                     </p>
+//                     `,
+//               },
+//               (err, _result) => {
+//                 if (err) {
+//                   console.log(err);
+//                 } else {
+//                   res.send("success");
+//                 }
+//                 transporter.close();
+//               }
+//             );
+//           });
+//           res.status(200).send("Complain Registered Sucessfully");
+//         })
+//         .catch((err) => {
+//           console.log(err);
+//           //   return res.status(500).send("Error :" + err);
+//         });
+//     }
+//   });
+// });
+//   comemail.push(req.body.email);
+//   compname.push(req.body.name);
+//   const regDate = Date(req.body.date);
+//   console.log(comemail, compname, img);
+//   const NewComplain = new Complain({
+//     priority,
+//     status,
+//     upvotes,
+//     level,
+//     lat,
+//     long,
+//     img,
+//     comemail,
+//     compname,
+//     regDate,
+//   });
+//   console.log(NewComplain);
+//   NewComplain.save()
+//     .then(() => {
+//       return res.status(200).send("Complain Registered Sucessfully");
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       return res.status(500).send("Error :" + err);
+//     });
+
+//new wala
 router.post("/addcomplain", (req, res) => {
   console.log(req.body, req.files);
   if (!req.files || Object.keys(req.files).length === 0) {
@@ -135,9 +239,10 @@ router.post("/addcomplain", (req, res) => {
   let uploadPath;
   var comemail = [];
   var compname = [];
-  const url=req.protocol+'://'+req.get('host')
+  const url = req.protocol + "://" + req.get("host");
   sampleFile = req.files.file;
-  uploadPath = url + "/Data/" + sampleFile.name;
+  uploadPath = __dirname + "/Data/" + sampleFile.name;
+  uploadPath1 = url + "/Routes/Data/" + sampleFile.name;
   const priority = req.body.priority;
   const upvotes = 1;
   const level = 0;
@@ -145,7 +250,7 @@ router.post("/addcomplain", (req, res) => {
   const ward = req.body.ward;
   const lat = req.body.latitude;
   const long = req.body.longitude;
-  const img = uploadPath;
+  const img = uploadPath1;
   sampleFile.mv(uploadPath, function (err) {
     if (err) {
       console.log(err);
@@ -207,31 +312,6 @@ router.post("/addcomplain", (req, res) => {
     }
   });
 });
-//   comemail.push(req.body.email);
-//   compname.push(req.body.name);
-//   const regDate = Date(req.body.date);
-//   console.log(comemail, compname, img);
-//   const NewComplain = new Complain({
-//     priority,
-//     status,
-//     upvotes,
-//     level,
-//     lat,
-//     long,
-//     img,
-//     comemail,
-//     compname,
-//     regDate,
-//   });
-//   console.log(NewComplain);
-//   NewComplain.save()
-//     .then(() => {
-//       return res.status(200).send("Complain Registered Sucessfully");
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       return res.status(500).send("Error :" + err);
-//     });
 
 router.get("/get-complain/:id", (req, res) => {
   Complain.findById(req.params.id)
@@ -408,7 +488,7 @@ router.put("/putaction", (req, res) => {
   // console.log(req.body);
   // console.log(req.files);
   let sampleFile;
-  const url=req.protocol+'://'+req.get('host')
+  const url = req.protocol + "://" + req.get("host");
   let uploadPath;
   sampleFile = req.files.pdf;
   uploadPath = url + "/Data/" + sampleFile.name;

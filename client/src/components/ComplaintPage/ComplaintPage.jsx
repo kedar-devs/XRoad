@@ -50,10 +50,13 @@ const ComplaintPage = () => {
             title: "Longitude",
             value: data.long,
           },
+          {
+            title: "Image",
+            value: data.img,
+          },
         ]);
       });
   }, []);
-
   return (
     <Grid
       container
@@ -80,8 +83,8 @@ const ComplaintPage = () => {
               Emails
               <p className="complaintpage_details_highlight">{email}</p>
             </h6>
-            {apiData.map((d) => (
-              <h6>
+            {apiData.map((d, i) => (
+              <h6 key={i}>
                 {d.title}
                 <p className="complaintpage_details_highlight">{d.value}</p>
               </h6>
@@ -92,10 +95,7 @@ const ComplaintPage = () => {
         )}
       </Grid>
       <Grid item container md={5} sm={12}>
-        <img
-          src="https://media.istockphoto.com/photos/pot-hole-picture-id174662203?k=6&m=174662203&s=612x612&w=0&h=_tbGPLKp7e3p65fpskyxI3iYAkLBY1lmkiT4QEaLTOI="
-          alt="complain image"
-        />
+        {apiData[7] ? <img src={apiData[7].value} /> : <></>}
       </Grid>
       <HorizontalLineHeading title="Complaint History" />
       <Grid item container>

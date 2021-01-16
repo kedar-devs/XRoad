@@ -35,7 +35,7 @@
 }
 .date {
   position: absolute;
-  bottom: 0px;
+  bottom: -12px;
   right: 8px;
   font-size: 10px;
   color: black;

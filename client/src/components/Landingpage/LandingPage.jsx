@@ -10,9 +10,14 @@ const LandingPage = () => {
     <div className="landingpage">
       <nav>
         {localStorage.getItem("Xroad") ? (
-          <div onClick={logoutuser}>
-            <LandingButton title="Log out" />
-          </div>
+          <>
+            <div onClick={logoutuser}>
+              <LandingButton title="Log out" />
+            </div>
+            <Link to="/authority-dashboard">
+              <LandingButton title="Dashboard" />
+            </Link>
+          </>
         ) : (
           <Link to="/login">
             <LandingButton title="Login" />
