@@ -19,6 +19,7 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mongoose": "^5.11.12",
+    "node-cron": "^2.0.3",
     "nodemailer": "^6.4.17",
     "order-id": "^2.1.1"
   },
