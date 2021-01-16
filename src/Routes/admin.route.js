@@ -25,8 +25,9 @@ router.route('/add').post((req,res)=>{
             const password=req.body.password
             const level=req.body.level
             const designation=req.body.designation
+            const ward=req.body.ward
             const resetToken=' '
-            const newUser=new Authority({Id,email,password,level,designation,resetToken})
+            const newUser=new Authority({Id,email,password,level,designation,ward,resetToken})
             bcrypt.hash(newUser.password,saltRound,(err,hash)=>{
                 if (err) throw err;
                 newUser.password=hash;
@@ -75,7 +76,7 @@ router.post('/login',(req,res)=>{
         }
         else{
             if(!user){
-                res.status(401).send('invalid Email')
+                res.status(401).send('invalid ID')
             }else{
                 bcrypt.compare(req.body.password,user.password).then(isMatch=>{
                     if(isMatch){

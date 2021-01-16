@@ -1,4 +1,4 @@
-
+const Admin=require('../Model/Admin.model')
 const Complain=require('../Model/Complain.model')
 const router=require('express').Router()
 router.get('/getLocation',(req,res)=>{
@@ -62,7 +62,7 @@ router.post('/addcomplain',(req,res)=>{
     const priority=req.body.body
     const status=0
     const upvotes=1
-    const level=1
+    const level=0
     const discription=req.body.discription
     const lat=req.body.lat
     const long=req.body.long
@@ -73,9 +73,10 @@ router.post('/addcomplain',(req,res)=>{
         else{
             comemail.push(req.body.email)
         compname.push(req.body.name)
+        const ward=req.body.ward
         const regDate=Date(req.body.date)
         console.log(comemail,compname,img)
-        const NewComplain=new Complain({priority,status,upvotes,discription,level,lat,long,img,comemail,compname,regDate})
+        const NewComplain=new Complain({priority,status,upvotes,discription,level,lat,long,img,comemail,compname,ward,regDate})
         console.log(NewComplain)
         NewComplain.save()
         .then(()=>{
@@ -127,6 +128,7 @@ router.put('/upvote',(req,res)=>{
         })
     })
 })
+
 router.put('/statusUpdate',(req,res)=>{
     Complain.findById(req.body.id)
     .then(complain=>{
@@ -136,7 +138,8 @@ router.put('/statusUpdate',(req,res)=>{
             complain.ActionDate=new Date()
         }
         complain.save()
-        .then(()=>{
+        .then(result=>{
+            console.log(result)            
             res.status(200).send('Status Updated Sucessfully')
         })
         .catch(err=>{
@@ -162,5 +165,34 @@ router.get('/getlevel/:level',(req,res)=>{
     .catch(err=>{
         res.status(500).send('Error: ' + err.message)
     })
+})
+router.put('/putaction',(req,res)=>{
+    let sampleFile
+    let uploadPath
+    sampleFile = req.files.pdf
+    uploadPath = __dirname +'/Data/' + sampleFile.name
+    sampleFile.mv(uploadPath, function(err) {
+        if (err)
+          return res.status(500).send(err);
+        
+    Complain.findOneAndUpdate({_id:req.body.id},{$push:{"ActionTaken":{
+        "action":req.body.action,
+        "link":uploadPath,
+        "officer":req.body.officer
+    }
+    
+
+    }})
+    .then(result => {
+        console.log("inthen")
+        console.log(result)
+        res.status(200).send('ACTION Added successfully')
+    })
+    .catch(err =>{
+        console.log(err)
+        console.log("inerror")
+        res.status(500).send(err)
+    })
+})
 })
 module.exports=router

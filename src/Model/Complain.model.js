@@ -1,5 +1,10 @@
 const mongoose=require('mongoose')
 const Schema=mongoose.Schema
+const ActionSchema=Schema({
+    action:{type:String},
+    link:{type:String},
+    officer:{type:String}
+})
 const ComplainBox=Schema({
     priority:{type:Number,required:true},
     status:{type:Number, required:true},
@@ -12,6 +17,7 @@ const ComplainBox=Schema({
     comemail:{type:[String],required:true},
     compname:{type:[String],required:true},
     regDate:{type:Date,required:true},
+    ActionTaken=[ActionSchema],
     ActionDate:{type:Date}
 })
 const complain=mongoose.model('Complain',ComplainBox)

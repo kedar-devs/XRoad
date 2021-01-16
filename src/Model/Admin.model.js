@@ -6,6 +6,7 @@ const AuthorityScema=Schema({
     password:{type:String,required:true},
     level:{type:String,required:true},
     designation:{type:String,required:true},
+    ward:{type:String,required:true},
     resetToken:{type:String,required:true}
 })
 const Authority=mongoose.model('Authority',AuthorityScema)
