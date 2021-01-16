@@ -20,7 +20,7 @@ const ComplaintPage = () => {
       .then(({ data }) => {
         setName(data.compname.join(", "));
         setEmail(data.comemail.join(", "));
-
+        console.log(data);
         setApiData([
           {
             title: "Description Of Problem:",
