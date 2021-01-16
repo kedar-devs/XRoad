@@ -11,6 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import EjectIcon from "@material-ui/icons/Eject";
 import ProgressStatus from "./ProgressStatus";
 import moment from "moment";
+import { Link } from "react-router-dom";
 const columns = [
   { id: "name", label: "Area", minWidth: 150 },
   { id: "code", label: "Date", minWidth: 100 },
@@ -106,7 +107,9 @@ export default function StickyHeadTable() {
                       <ProgressStatus value={row.population} />
                     </TableCell>
                     <TableCell align={"right"}>
-                      <EjectIcon />
+                      <Link to={`/upvote/1`}>
+                        <EjectIcon />
+                      </Link>
                     </TableCell>
                   </TableRow>
                 );

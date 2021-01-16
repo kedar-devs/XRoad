@@ -8,7 +8,7 @@ h1 {
 
 h1:before,
 h1:after {
-  background-color: #000;
+  background-color: black;
   content: "";
   display: inline-block;
   height: 1px;

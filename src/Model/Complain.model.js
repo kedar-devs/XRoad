@@ -17,7 +17,7 @@ const ComplainBox=Schema({
     comemail:{type:[String],required:true},
     compname:{type:[String],required:true},
     regDate:{type:Date,required:true},
-    ActionTaken=[ActionSchema],
+    ActionTaken:[ActionSchema],
     ActionDate:{type:Date}
 })
 const complain=mongoose.model('Complain',ComplainBox)

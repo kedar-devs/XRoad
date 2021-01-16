@@ -1,10 +1,12 @@
 .layout {
   margin: 5%;
   padding: 5%;
-  display: grid;
-  grid-template-columns: auto auto;
+  /* display: grid; */
+  /* grid-template-columns: auto auto; */
   background-color: aliceblue;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .CitizenForm {
@@ -26,10 +28,15 @@
 
 .map {
   margin: 0 auto;
+  margin-top: 50px;
 }
-
+.map p {
+  margin: 0;
+  margin-left: 20px;
+}
 @media (max-width: 1200px) {
   .layout {
+    display: grid;
     grid-template-columns: auto;
   }
 }
