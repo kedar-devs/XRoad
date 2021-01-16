@@ -1,16 +1,17 @@
 import React from "react";
 import "./Complaint.css";
 import moment from "moment";
-const Complaint = () => {
+const Complaint = ({ data }) => {
+  console.log(data);
   return (
     <div className="complaint">
       <div className="startingletter">
-        <h3>N</h3>
+        <h3>{data.compname[0][0]}</h3>
       </div>
       {/* <div className="complaint_details"> */}
-      <p className="name">Name</p>
+      <p className="name">{data.compname[0]}</p>
       <p className="date">
-        {moment(Date.now()).subtract(10, "days").calendar()}
+        {moment(data.regDate).subtract(10, "days").calendar()}
       </p>
       {/* </div> */}
     </div>

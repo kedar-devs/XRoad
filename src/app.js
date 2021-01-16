@@ -13,7 +13,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
-app.use("/Data", express.static(path.join(__dirname + "/Routes/Data")));
+// app.use("/Routes/Data", express.static(path.join(__dirname + "/Routes/Data")));
+app.use("/Routes/Data", express.static(path.join(__dirname + "/Routes/Data")));
 app.use("/complain", ComplainRoute);
 app.use("/admin", AuthorityRoute);
 // app.use('/Authority',RecruitorRoute)

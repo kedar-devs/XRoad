@@ -192,6 +192,9 @@ class CitizenForm extends Component {
         .then(() => {
           alert("Complain registered successfully");
           // window.location.href = "/lodge-complaint";
+          let p = this.state;
+          p["done"] = true;
+          this.setState(p);
         })
         .catch((err) => {
           console.log(err);

@@ -21,6 +21,7 @@ const ComplaintPage = () => {
         setName(data.compname.join(", "));
         setEmail(data.comemail.join(", "));
         console.log(data);
+        console.log(data.ActionTaken);
         setApiData([
           {
             title: "Description Of Problem:",
@@ -53,6 +54,10 @@ const ComplaintPage = () => {
           {
             title: "Image",
             value: data.img,
+          },
+          {
+            title: "Job done",
+            value: data.ActionTaken,
           },
         ]);
       });
@@ -99,7 +104,15 @@ const ComplaintPage = () => {
       </Grid>
       <HorizontalLineHeading title="Complaint History" />
       <Grid item container>
-        <ComplaintPageHistory value={"hello"} />
+        {/* {apiData[8] ? (
+          <>
+            {apiData[8].value.map((a) => (
+              <ComplaintPage data={a} />
+            ))}
+          </>
+        ) : (
+          <></>
+        )} */}
       </Grid>
       <Grid>
         <ProcessForm id={params.id} />

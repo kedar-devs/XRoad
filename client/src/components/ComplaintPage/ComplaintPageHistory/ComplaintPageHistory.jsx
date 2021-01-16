@@ -2,8 +2,8 @@ import { Avatar, Grid } from "@material-ui/core";
 import React from "react";
 import "./ComplaintPageHistory.css";
 import SeepdfBtn from "./SeepdfBtn";
-const ComplaintPageHistory = ({ value }) => {
-  console.log(value);
+const ComplaintPageHistory = ({ data }) => {
+  console.log(data);
   return (
     <Grid
       container
@@ -13,15 +13,6 @@ const ComplaintPageHistory = ({ value }) => {
       alignItems="center"
       justify="center"
     >
-      {/* <Grid container item xs={1}></Grid> */}
-      {/* <Grid
-        item
-        container
-        xs={11}
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-        > */}
       <Grid container item alignItems="center">
         <Avatar>A</Avatar>
         <p>Officer Name</p>
