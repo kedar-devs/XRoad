@@ -1,10 +1,12 @@
 import React from 'react'
-import { Doughnut } from 'react-chartjs-2'
+import { Doughnut, defaults } from 'react-chartjs-2'
 
 const status = {
 	x: ['Pending', 'Level-1', 'Level-2', 'Completed'],
 	y: [12, 5, 3, 8],
 }
+
+defaults.global.defaultFontColor = 'white'
 
 function DoughnutChart() {
 	const data = {
@@ -23,6 +25,7 @@ function DoughnutChart() {
 		title: {
 			display: true,
 			text: 'Progress',
+			fontColor: 'white',
 		},
 		responsive: true,
 		maintainAspectRatio: true,
