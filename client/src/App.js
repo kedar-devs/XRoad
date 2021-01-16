@@ -34,7 +34,8 @@ function App() {
           </Route>
           <Route path="/upvote/:id" component={UpvoteForm} />
           <Route path="/authority-dashboard">
-            <ComplaintsDisplay />
+            <AuthorityDashboard />
+            {/* <ComplaintsDisplay /> */}
           </Route>
           <Route path="/allcomplaints">
             <HorizontalLineHeading title={"Registred Complaints"} dark="true" />

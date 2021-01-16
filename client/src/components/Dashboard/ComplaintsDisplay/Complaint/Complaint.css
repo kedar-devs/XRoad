@@ -1,5 +1,5 @@
 .complaint {
-  width: 100px;
+  width: 150px;
   position: relative;
   margin: 10px;
 }
@@ -8,26 +8,26 @@
   height: 100px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  background: rgba(0, 0, 0, 0.7);
+  background: whitesmoke;
 }
 .startingletter > h3 {
-  color: aliceblue;
+  color: black;
   position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 25px;
-  border: 1px solid aliceblue;
+  border: 1px solid black;
   width: fit-content;
   border-radius: 50%;
   padding: 5px 12px;
 }
 .name {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: white;
   margin: 0px;
   padding: 5px 0 25px 5px;
   font-size: 12px;
-  color: white;
+  color: black;
   font-weight: 800;
   text-align: center;
   border-bottom-left-radius: 10px;
@@ -35,9 +35,9 @@
 }
 .date {
   position: absolute;
-  bottom: -12px;
+  bottom: 0px;
   right: 8px;
   font-size: 10px;
-  color: aliceblue;
+  color: black;
   padding: 7px 2px;
 }

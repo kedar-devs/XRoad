@@ -3,6 +3,7 @@ import Complaint from "./Complaint/Complaint";
 import "./ComplaintsDisplay.css";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { Grid } from "@material-ui/core";
 const ComplaintsDisplay = () => {
   const history = useHistory();
   const [complaints, setComplaints] = useState([]);
@@ -35,11 +36,13 @@ const ComplaintsDisplay = () => {
     }
   }, []);
   return (
-    <div className="ComplaintsDisplay">
+    <>
       {complaints.map((complaint) => (
-        <Complaint key={complaint._id} data={complaint} />
+        <Grid item container md={4} sm={3} xs={6} key={complaint._id}>
+          <Complaint data={complaint} />
+        </Grid>
       ))}
-    </div>
+    </>
   );
 };
 
