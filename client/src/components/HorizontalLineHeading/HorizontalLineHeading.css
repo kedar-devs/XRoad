@@ -5,7 +5,6 @@ h1 {
   text-align: center;
   padding: 25px 20px;
   color: aliceblue;
-  background-color: rgba(0, 0, 0, 0.7);
   margin: 0px;
 }
 
@@ -28,4 +27,7 @@ h1:before {
 h1:after {
   left: 0.5em;
   margin-right: -50%;
+}
+.dark {
+  background-color: rgba(0, 0, 0, 0.7);
 }

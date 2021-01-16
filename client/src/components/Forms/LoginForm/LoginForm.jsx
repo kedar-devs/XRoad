@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import Button from "../../UI/Button/Button";
-import classes from "./UpvoteForm.module.css";
+import classes from "../UpvoteForm/UpvoteForm.module.css";
 import Input from "../../UI/Input/Input";
 import Spinner from "../../UI/Spinner/Spinner";
 import axios from "axios";
-class UpvoteForm extends Component {
+class LoginForm extends Component {
   state = {
     orderForm: {
-      name: {
+      email: {
         elementType: "input",
         elementConfig: {
-          type: "text",
-          placeholder: "Name",
+          type: "email",
+          placeholder: "Email",
         },
         value: "",
         validation: {
@@ -20,12 +20,11 @@ class UpvoteForm extends Component {
         valid: false,
         touched: false,
       },
-
-      email: {
-        elementType: "input",
+      password: {
+        elementType: "password",
         elementConfig: {
-          type: "email",
-          placeholder: "Email",
+          type: "text",
+          placeholder: "password",
         },
         value: "",
         validation: {
@@ -79,18 +78,15 @@ class UpvoteForm extends Component {
         formElementIdentifier
       ].value;
     }
-    formData["id"] = this.props.match.params.id;
-    axios
-      .put("http://localhost:5000/complain/upvote", formData)
-      .then((res) => {
-        console.log(res);
-        this.props.history.push("/allcomplaints");
-      })
-      .catch((err) => {
-        console.log("There is an error here in the upvote");
-        console.log(err);
-      });
-    // alert(JSON.stringify(formData, null, 2));
+    // formData["id"] = this.props.match.params.id;
+    // axios
+    //   .put("http://localhost:5000/complain/upvote", formData)
+    //   .then((res) => console.log(res))
+    //   .catch((err) => {
+    //     console.log("There is an error here in the upvote");
+    //     console.log(err);
+    //   });
+    alert(JSON.stringify(formData, null, 2));
   };
 
   render() {
@@ -118,7 +114,7 @@ class UpvoteForm extends Component {
           />
         ))}
         <Button disabled={!this.state.formIsValid} btnType="Success">
-          Upvote
+          Login{" "}
         </Button>
       </form>
     );
@@ -130,7 +126,7 @@ class UpvoteForm extends Component {
     return (
       <div className={classes.upvotingform}>
         <div className={classes.UpvoteForm}>
-          <h1>Upvote Form</h1>
+          <h1>Login</h1>
           {form}
         </div>
       </div>
@@ -138,4 +134,4 @@ class UpvoteForm extends Component {
   }
 }
 
-export default UpvoteForm;
+export default LoginForm;
