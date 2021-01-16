@@ -14,15 +14,12 @@ const ComplaintPageHistory = ({ data }) => {
       justify="center"
     >
       <Grid container item alignItems="center">
-        <Avatar>A</Avatar>
-        <p>Officer Name</p>
+        <Avatar>{data.officer[0]}</Avatar>
+        <p>{data.officer}</p>
       </Grid>
       <Grid container item justify="space-between">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa,
-          laborum.
-        </p>
-        <SeepdfBtn />
+        <p>{data.action}</p>
+        <SeepdfBtn link={data.link} />
       </Grid>
     </Grid>
     // </Grid>

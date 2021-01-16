@@ -13,7 +13,8 @@ const ComplaintPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   let [apiData, setApiData] = useState([]);
-
+  const [jobs, setJobs] = useState([]);
+  const [image, setImage] = useState("");
   useEffect(() => {
     axios
       .get(`http://localhost:5000/complain/get-complain/${params.id}`)
@@ -55,11 +56,13 @@ const ComplaintPage = () => {
             title: "Image",
             value: data.img,
           },
-          {
-            title: "Job done",
-            value: data.ActionTaken,
-          },
+          //   {
+          //     title: "Job done",
+          //     value: data.ActionTaken,
+          //   },
         ]);
+        setImage(data.img);
+        setJobs(data.ActionTaken);
       });
   }, []);
   return (
@@ -104,15 +107,9 @@ const ComplaintPage = () => {
       </Grid>
       <HorizontalLineHeading title="Complaint History" />
       <Grid item container>
-        {/* {apiData[8] ? (
-          <>
-            {apiData[8].value.map((a) => (
-              <ComplaintPage data={a} />
-            ))}
-          </>
-        ) : (
-          <></>
-        )} */}
+        {jobs.map((job) => (
+          <ComplaintPageHistory data={job} />
+        ))}
       </Grid>
       <Grid>
         <ProcessForm id={params.id} />

@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function IconLabelButtons() {
+export default function IconLabelButtons({ link }) {
   const classes = useStyles();
   const [showpdf, setShowpdf] = useState(false);
   return (
@@ -25,7 +25,7 @@ export default function IconLabelButtons() {
       >
         See doc
       </Button>
-      {showpdf && <MyPdfViewer file={Pdf} onclick={() => setShowpdf(false)} />}
+      {showpdf && <MyPdfViewer file={link} onclick={() => setShowpdf(false)} />}
     </div>
   );
 }
