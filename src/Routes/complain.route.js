@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
 
   auth: {
     user: "savishkargec@gmail.com",
-    pass: process.env.GMAIL_KEY,
+    pass: "for@*web45",
   },
 });
 router.get("/getLocation", (req, res) => {
@@ -198,6 +198,7 @@ router.post("/check-distance", async (req, res) => {
   long = req.body.long;
   let cor = "";
   const complains = await Complain.find({});
+  console.log(complains);
   for (i = 0; i < complains.length; i++) {
     if (i === complains.length - 1) {
       cor += complains[i].lat + "," + complains[i].long;
@@ -205,23 +206,25 @@ router.post("/check-distance", async (req, res) => {
       cor += complains[i].lat + "," + complains[i].long + "|";
     }
   }
+
+  console.log(cor);
   const { data } = await axios.post(
     `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${cor}&destinations=${lat},${long}&departure_time=now&key=${process.env.API_KEY}`
   );
   const rows = data.rows;
 
-  let closest = 0;
   let distance = rows[0].elements[0].distance.value;
   for (i = 0; i < rows.length; i++) {
     if (rows[i].elements[0].distance.value < distance) {
       distance = rows[i].elements[0].distance.value;
-      closestDriver = i;
     }
   }
+  console.log(distance);
   if (distance > 250) {
-    res.status(200).json({ complainstatus: "Registered" });
+    console.log("heu");
+    res.status(200).json({ complainstatus: "Not Registered" });
   } else {
-    res.status(200).json({ complainstatus: "Not Registerd" });
+    res.status(200).json({ complainstatus: "Registerd" });
   }
 });
 
