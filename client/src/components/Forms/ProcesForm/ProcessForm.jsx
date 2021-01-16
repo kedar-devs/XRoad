@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Button from "../../UI/Button/Button";
-import classes from "../CitizenForm/CitizenForm.module.css";
+import classes from "./ProcessForm.module.css";
 import Input from "../../UI/Input/Input";
 import Spinner from "../../UI/Spinner/Spinner";
 import axios from "axios";
@@ -109,7 +109,6 @@ class CitizenForm extends Component {
       });
     // alert(JSON.stringify(formData, null, 2));
   };
-
   render() {
     const formElementsArray = [];
     for (let key in this.state.orderForm) {
@@ -141,7 +140,7 @@ class CitizenForm extends Component {
     if (this.state.loading) {
       form = <Spinner />;
     }
-
+    console.log(this.props.id);
     return (
       <div className={classes.layout}>
         <div className={classes.CitizenForm}>

@@ -5,6 +5,7 @@ import Input from "../../UI/Input/Input";
 import Spinner from "../../UI/Spinner/Spinner";
 import axios from "axios";
 import Map from "../../Map";
+import { Redirect } from "react-router-dom";
 class CitizenForm extends Component {
   state = {
     orderForm: {
@@ -46,6 +47,7 @@ class CitizenForm extends Component {
             { value: 5, displayValue: "Ward 5" },
           ],
         },
+        done: false,
         value: "2",
         validation: {},
         valid: true,
@@ -192,7 +194,6 @@ class CitizenForm extends Component {
 
     // alert(JSON.stringify(formData, null, 2));
   };
-
   render() {
     const formElementsArray = [];
     for (let key in this.state.orderForm) {
@@ -224,7 +225,9 @@ class CitizenForm extends Component {
     if (this.state.loading) {
       form = <Spinner />;
     }
-
+    if (this.state.done) return <Redirect to="/allcomplaints" />;
+    console.log(this.state.lat);
+    console.log(this.state.long);
     return (
       <div className={classes.layout}>
         <div className={classes.CitizenForm}>

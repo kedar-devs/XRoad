@@ -3,8 +3,12 @@ import React from "react";
 import "./ComplaintPage.css";
 import moment from "moment";
 import HorizontalLineHeading from "../HorizontalLineHeading/HorizontalLineHeading";
+import ComplaintPageHistory from "./ComplaintPageHistory/ComplaintPageHistory";
+import ProcessForm from "../Forms/ProcesForm/ProcessForm";
+import { useParams } from "react-router-dom";
 const ComplaintPage = (props) => {
-  console.log(props.location.params);
+  console.log(props.match);
+  const { id } = useParams();
   const data = [
     {
       title: "Filer Name",
@@ -54,34 +58,30 @@ const ComplaintPage = (props) => {
       <Grid
         item
         container
-        md={8}
+        md={7}
         sm={12}
         direction="column"
         className="complaintpage_details"
       >
-        {data.map((d) => (
-          <h6>
+        {data.map((d, i) => (
+          <h6 key={i}>
             {d.title}
             <p className="complaintpage_details_highlight">{d.value}</p>
           </h6>
         ))}
-        {/* <p>Filer Email:-email</p>
-        <p>
-          Description of problem:-.
-        </p>
-        <p>
-          Registered On:-{moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")}
-        </p>
-        <p>Priority:{"  "}1</p>
-        <p>No of upvotes:{"  "}3</p>
-        <p>Ward No:{"  "} 3</p>
-        <p>Address: Lorem ipsum dolor sit amet consectetur adipisicing. </p> */}
       </Grid>
-      <Grid item container md={4} sm={12}>
+      <Grid item container md={5} sm={12}>
         <img
           src="https://media.istockphoto.com/photos/pot-hole-picture-id174662203?k=6&m=174662203&s=612x612&w=0&h=_tbGPLKp7e3p65fpskyxI3iYAkLBY1lmkiT4QEaLTOI="
           alt="complain image"
         />
+      </Grid>
+      <HorizontalLineHeading title="Complaint History" />
+      <Grid item container>
+        <ComplaintPageHistory value={"hello"} />
+      </Grid>
+      <Grid>
+        <ProcessForm id={id} />
       </Grid>
     </Grid>
   );
