@@ -8,6 +8,7 @@ import GetUserLocation from "./components/GetUserLocation";
 import DisplayTable from "./components/DisplayTable/DisplayTable";
 import HorizontalLineHeading from "./components/HorizontalLineHeading/HorizontalLineHeading";
 import AuthorityDashboard from "./components/Dashboard/AuthorityDashboard";
+import ProcessPage from "./components/Forms/ProcesForm/ProcessForm";
 import LoginForm from "./components/Forms/LoginForm/LoginForm";
 import ComplaintsDisplay from "./components/Dashboard/ComplaintsDisplay/ComplaintsDisplay";
 import ComplaintPage from "./components/ComplaintPage/ComplaintPage";
@@ -47,6 +48,7 @@ function App() {
           <Route path="/complaint/:id">
             <ComplaintPage />
           </Route>
+          <Route path="/view-and-proceed/:id" component={ProcessPage} />
         </Switch>
       </Router>
     </div>

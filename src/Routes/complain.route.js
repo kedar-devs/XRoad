@@ -1,5 +1,5 @@
 const { route } = require("../app");
-const Authority=require("../Model/Admin.model")
+const Authority = require("../Model/Admin.model");
 const Complain = require("../Model/Complain.model");
 const axios = require("axios");
 const router = require("express").Router();
@@ -102,68 +102,67 @@ router.post("/addcomplain", (req, res) => {
       });
       console.log(NewComplain);
       NewComplain.save()
-        .then(result => {
-            Authority.find({
-                level:result.level+1,
-                ward:result.ward
-            })
-            .then(admin=>{
-                transporter.sendMail({
-                    to:admin.email,
-                    from:"savishkargec@gmail.com",
-                    subject:"Complain Fired",
-                    html:`
+        .then((result) => {
+          Authority.find({
+            level: result.level + 1,
+            ward: result.ward,
+          }).then((admin) => {
+            transporter.sendMail(
+              {
+                to: admin.email,
+                from: "savishkargec@gmail.com",
+                subject: "Complain Fired",
+                html: `
                     <p> A Complain has been fired by the locals of your ward and requires your attention please attend to it
                     <br />
                     Thank you 
                     </p>
-                    `
-    
-                },(err,result)=>{
-                    if(err){
-                        console.log(err)
-                    }
-                    else{
-                        res.send("success")
-                    }
-                    transporter.close()
-                })
-            }) 
-            res.status(200).send("Complain Registered Sucessfully");
+                    `,
+              },
+              (err, result) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  res.send("success");
+                }
+                transporter.close();
+              }
+            );
+          });
+          res.status(200).send("Complain Registered Sucessfully");
         })
         .catch((err) => {
           console.log(err);
           //   return res.status(500).send("Error :" + err);
-        });    
-}})
-      
+        });
+    }
+  });
 });
-  //   comemail.push(req.body.email);
-  //   compname.push(req.body.name);
-  //   const regDate = Date(req.body.date);
-  //   console.log(comemail, compname, img);
-  //   const NewComplain = new Complain({
-  //     priority,
-  //     status,
-  //     upvotes,
-  //     level,
-  //     lat,
-  //     long,
-  //     img,
-  //     comemail,
-  //     compname,
-  //     regDate,
-  //   });
-  //   console.log(NewComplain);
-  //   NewComplain.save()
-  //     .then(() => {
-  //       return res.status(200).send("Complain Registered Sucessfully");
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       return res.status(500).send("Error :" + err);
-  //     });
-
+//   comemail.push(req.body.email);
+//   compname.push(req.body.name);
+//   const regDate = Date(req.body.date);
+//   console.log(comemail, compname, img);
+//   const NewComplain = new Complain({
+//     priority,
+//     status,
+//     upvotes,
+//     level,
+//     lat,
+//     long,
+//     img,
+//     comemail,
+//     compname,
+//     regDate,
+//   });
+//   console.log(NewComplain);
+//   NewComplain.save()
+//     .then(() => {
+//       return res.status(200).send("Complain Registered Sucessfully");
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       return res.status(500).send("Error :" + err);
+//     });
 
 router.get("/get-ward-complains/:id", (req, res) => {
   Complain.find({ ward: Number(req.params.id) })
@@ -233,32 +232,32 @@ router.put("/upvote", (req, res) => {
     if (complain.upvotes % 10 == 0 && complain.priority <= 40) {
       complain.priority += 1;
       Authority.find({
-        level:result.level+1,
-        ward:result.ward
-    })
-    .then(admin=>{
-        transporter.sendMail({
-            to:admin.email,
-            from:"savishkargec@gmail.com",
-            subject:"Complain Fired",
-            html:`
+        level: result.level + 1,
+        ward: result.ward,
+      }).then((admin) => {
+        transporter.sendMail(
+          {
+            to: admin.email,
+            from: "savishkargec@gmail.com",
+            subject: "Complain Fired",
+            html: `
             <p> A Complain has been fired by the locals of your ward and requires your attention please attend to it
             <br />
             Thank you 
             </p>
-            `
-
-        },(err,result)=>{
-            if(err){
-                console.log(err)
+            `,
+          },
+          (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.send("success");
             }
-            else{
-                res.send("success")
-            }
-            transporter.close()
-        })
-    }) 
-    }   
+            transporter.close();
+          }
+        );
+      });
+    }
     complain
       .save()
       .then(() => {
@@ -278,32 +277,32 @@ router.put("/levelUpdate", (req, res) => {
     }
     complain
       .save()
-      .then(result => {
+      .then((result) => {
         Authority.find({
-            level:result.level+1
-        })
-        .then(admin=>{
-            transporter.sendMail({
-                to:admin.email,
-                from:"savishkargec@gmail.com",
-                subject:"Complain Fired",
-                html:`
+          level: result.level + 1,
+        }).then((admin) => {
+          transporter.sendMail(
+            {
+              to: admin.email,
+              from: "savishkargec@gmail.com",
+              subject: "Complain Fired",
+              html: `
                 <p> A Complain has been fired by the locals and has been varified by the ward authority. The complain will appear in your destop<br /> please to the necessary 
                 <br />
                 Thank you 
                 </p>
-                `
-
-            },(err,result)=>{
-                if(err){
-                    console.log(err)
-                }
-                else{
-                    res.send("success")
-                }
-                transporter.close()
-            })
-        })
+                `,
+            },
+            (err, result) => {
+              if (err) {
+                console.log(err);
+              } else {
+                res.send("success");
+              }
+              transporter.close();
+            }
+          );
+        });
         res.status(200).send("Level Updated Sucessfully");
       })
       .catch((err) => {
@@ -328,26 +327,28 @@ router.get("/getlevel/:level", (req, res) => {
 });
 // Naya hai yah
 router.put("/putaction", (req, res) => {
+  console.log(req.body.id);
+  // console.log(req.body);
+  // console.log(req.files);
   let sampleFile;
   let uploadPath;
   sampleFile = req.files.pdf;
   uploadPath = __dirname + "/Data/" + sampleFile.name;
-  sampleFile
-    .mv(uploadPath, function (err) {
-      if (err) return res.status(500).send(err);
-
-      Complain.findOneAndUpdate(
-        { _id: req.body.id },
-        {
-          $push: {
-            ActionTaken: {
-              action: req.body.action,
-              link: uploadPath,
-              officer: req.body.officer,
-            },
+  sampleFile.mv(uploadPath, function (err) {
+    if (err) return res.status(500).send(err);
+    Complain.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $push: {
+          ActionTaken: {
+            action: req.body.action,
+            link: uploadPath,
+            officer: req.body.officer,
           },
-        }
-      ).then((result) => {
+        },
+      }
+    )
+      .then((result) => {
         for (var i = 0; i < result.comemail.length; i++) {
           transporter.sendMail(
             {
@@ -355,13 +356,13 @@ router.put("/putaction", (req, res) => {
               from: "savishkargec@gmail.com",
               subject: "Action Taken",
               html: `
-                <p> Dear user, the complain registered by you has been officially looked into and a pertiular action was taken
-                <br />Action:${req.body.action}<br />
-                Officer who took the Action:${req.body.officer}
-                <br />
-                Thank you 
-                </p>
-                `,
+                  <p> Dear user, the complain registered by you has been officially looked into and a pertiular action was taken
+                  <br />Action:${req.body.action}<br />
+                  Officer who took the Action:${req.body.officer}
+                  <br />
+                  Thank you
+                  </p>
+                  `,
             },
             (err, result) => {
               if (err) {
@@ -373,16 +374,14 @@ router.put("/putaction", (req, res) => {
             }
           );
         }
+        res.status(200).json("ACTION Added successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("inerror");
+        res.status(500).send(err);
       });
-      console.log("inthen");
-      console.log(result);
-      res.status(200).send("ACTION Added successfully");
-    })
-    .catch((err) => {
-      console.log(err);
-      console.log("inerror");
-      res.status(500).send(err);
-    });
+  });
 });
 
 //Naya hai yaahh
