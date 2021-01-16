@@ -1,6 +1,8 @@
 import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ComplaintPageHistory from "./ComplaintPageHistory/ComplaintPageHistory";
+import ProcessForm from "../Forms/ProcesForm/ProcessForm";
 import "./ComplaintPage.css";
 import moment from "moment";
 import HorizontalLineHeading from "../HorizontalLineHeading/HorizontalLineHeading";
@@ -63,7 +65,7 @@ const ComplaintPage = () => {
       <Grid
         item
         container
-        md={8}
+        md={7}
         sm={12}
         direction="column"
         className="complaintpage_details"
@@ -100,11 +102,18 @@ const ComplaintPage = () => {
         <p>Ward No:{"  "} 3</p>
         <p>Address: Lorem ipsum dolor sit amet consectetur adipisicing. </p> */}
       </Grid>
-      <Grid item container md={4} sm={12}>
+      <Grid item container md={5} sm={12}>
         <img
           src="https://media.istockphoto.com/photos/pot-hole-picture-id174662203?k=6&m=174662203&s=612x612&w=0&h=_tbGPLKp7e3p65fpskyxI3iYAkLBY1lmkiT4QEaLTOI="
           alt="complain image"
         />
+      </Grid>
+      <HorizontalLineHeading title="Complaint History" />
+      <Grid item container>
+        <ComplaintPageHistory value={"hello"} />
+      </Grid>
+      <Grid>
+        <ProcessForm id={params.id} />
       </Grid>
     </Grid>
   );
