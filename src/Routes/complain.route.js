@@ -1,5 +1,6 @@
 const { route } = require("../app");
 const Complain = require("../Model/Complain.model");
+const axios = require("axios");
 const router = require("express").Router();
 router.get("/getLocation", (req, res) => {
   Complain.find()
@@ -147,7 +148,10 @@ router.get("/get-levelwise/:level", (req, res) => {
     });
 });
 
-router.get("/get-all-coordinates", async (req, res) => {
+router.post("/check-distance", async (req, res) => {
+  console.log(req.body);
+  lat = req.body.lat;
+  long = req.body.long;
   let cor = "";
   const complains = await Complain.find({});
   for (i = 0; i < complains.length; i++) {
@@ -157,7 +161,24 @@ router.get("/get-all-coordinates", async (req, res) => {
       cor += complains[i].lat + "," + complains[i].long + "|";
     }
   }
-  res.status(200).json({ corstring: cor });
+  const { data } = await axios.post(
+    `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${cor}&destinations=${lat},${long}&departure_time=now&key=${process.env.API_KEY}`
+  );
+  const rows = data.rows;
+
+  let closest = 0;
+  let distance = rows[0].elements[0].distance.value;
+  for (i = 0; i < rows.length; i++) {
+    if (rows[i].elements[0].distance.value < distance) {
+      distance = rows[i].elements[0].distance.value;
+      closestDriver = i;
+    }
+  }
+  if (distance > 250) {
+    res.status(200).json({ complainstatus: "Registered" });
+  } else {
+    res.status(200).json({ complainstatus: "Not Registerd" });
+  }
 });
 
 router.put("/upvote", (req, res) => {

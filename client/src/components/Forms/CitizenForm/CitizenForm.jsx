@@ -90,7 +90,7 @@ class CitizenForm extends Component {
     loading: false,
     formIsValid: false,
     image: null,
-    coorstr: "",
+    status: "",
   };
 
   componentDidMount() {
@@ -161,27 +161,34 @@ class CitizenForm extends Component {
     // }
     // Image Upload
     axios
-      .get("http://localhost:5000/complain/get-all-coordinates")
-      .then((res) => console.log(res.data));
+      .post("http://localhost:5000/complain/check-distance", {
+        lat: this.state.lat,
+        long: this.state.long,
+      })
+      .then((res) => this.setState({ status: res.data }));
     const image = this.state.image;
     const data = new FormData();
     data.set("encType", "multipart/form-data");
     data.append("name", this.state.orderForm.name.value);
     data.append("email", this.state.orderForm.email.value);
     data.append("latitude", this.state.lat);
-    data.append("longitude", this.state.lon);
+    data.append("longitude", this.state.long);
     data.append("ward", this.state.orderForm.ward.value);
     data.append("priority", this.state.orderForm.priority.value);
     data.append("description", this.state.orderForm.description.value);
     data.append("file", this.state.image);
     const multerimage = URL.createObjectURL(this.state.image);
 
-    axios
-      .post("http://localhost:5000/complain/addcomplain", data)
-      .then(() => alert("Complain registered successfully"))
-      .catch((err) => {
-        console.log(err);
-      });
+    if (this.state.status === "Not Registerd")
+      axios
+        .post("http://localhost:5000/complain/addcomplain", data)
+        .then(() => alert("Complain registered successfully"))
+        .catch((err) => {
+          console.log(err);
+        });
+    else {
+      alert("This location has already been registered");
+    }
 
     // alert(JSON.stringify(formData, null, 2));
   };
