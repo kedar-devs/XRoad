@@ -1,14 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 h1 {
-  font-family: "Dancing Script", cursive;
+  /* font-family: "Dancing Script", cursive; */
   overflow: hidden;
   text-align: center;
-  padding: 20px;
+  padding: 25px 20px;
+  color: aliceblue;
+  background-color: rgba(0, 0, 0, 0.7);
+  margin: 0px;
 }
 
 h1:before,
 h1:after {
-  background-color: black;
+  background-color: white;
   content: "";
   display: inline-block;
   height: 1px;
