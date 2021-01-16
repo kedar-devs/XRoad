@@ -3,12 +3,21 @@ import LandingButton from "./LandingButtons/LandingButton";
 import "./LandingPage.css";
 import { Link } from "react-router-dom";
 const LandingPage = () => {
+  const logoutuser = () => {
+    localStorage.removeItem("Xroad");
+  };
   return (
     <div className="landingpage">
       <nav>
-        <Link to="/login">
-          <LandingButton title="Login" />
-        </Link>
+        {localStorage.getItem("Xroad") ? (
+          <div onClick={logoutuser}>
+            <LandingButton title="Log out" />
+          </div>
+        ) : (
+          <Link to="/login">
+            <LandingButton title="Login" />
+          </Link>
+        )}
       </nav>
       <div className="heading">
         <h2>XRoad</h2>
