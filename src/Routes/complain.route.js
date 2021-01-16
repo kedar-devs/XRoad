@@ -1,4 +1,5 @@
 const { route } = require("../app");
+const Authority=require("../Model/Admin.model")
 const Complain = require("../Model/Complain.model");
 const axios = require("axios");
 const router = require("express").Router();
@@ -101,15 +102,42 @@ router.post("/addcomplain", (req, res) => {
       });
       console.log(NewComplain);
       NewComplain.save()
-        .then(() => {
-          res.status(200).send("Complain Registered Sucessfully");
+        .then(result => {
+            Authority.find({
+                level:result.level+1,
+                ward:result.ward
+            })
+            .then(admin=>{
+                transporter.sendMail({
+                    to:admin.email,
+                    from:"savishkargec@gmail.com",
+                    subject:"Complain Fired",
+                    html:`
+                    <p> A Complain has been fired by the locals of your ward and requires your attention please attend to it
+                    <br />
+                    Thank you 
+                    </p>
+                    `
+    
+                },(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }
+                    else{
+                        res.send("success")
+                    }
+                    transporter.close()
+                })
+            }) 
+            res.status(200).send("Complain Registered Sucessfully");
         })
         .catch((err) => {
           console.log(err);
           //   return res.status(500).send("Error :" + err);
-        });
-    }
-  });
+        });    
+}})
+      
+});
   //   comemail.push(req.body.email);
   //   compname.push(req.body.name);
   //   const regDate = Date(req.body.date);
@@ -135,7 +163,7 @@ router.post("/addcomplain", (req, res) => {
   //       console.log(err);
   //       return res.status(500).send("Error :" + err);
   //     });
-});
+
 
 router.get("/get-ward-complains/:id", (req, res) => {
   Complain.find({ ward: Number(req.params.id) })
@@ -204,7 +232,33 @@ router.put("/upvote", (req, res) => {
     complain.upvotes += 1;
     if (complain.upvotes % 10 == 0 && complain.priority <= 40) {
       complain.priority += 1;
-    }
+      Authority.find({
+        level:result.level+1,
+        ward:result.ward
+    })
+    .then(admin=>{
+        transporter.sendMail({
+            to:admin.email,
+            from:"savishkargec@gmail.com",
+            subject:"Complain Fired",
+            html:`
+            <p> A Complain has been fired by the locals of your ward and requires your attention please attend to it
+            <br />
+            Thank you 
+            </p>
+            `
+
+        },(err,result)=>{
+            if(err){
+                console.log(err)
+            }
+            else{
+                res.send("success")
+            }
+            transporter.close()
+        })
+    }) 
+    }   
     complain
       .save()
       .then(() => {
@@ -224,7 +278,32 @@ router.put("/levelUpdate", (req, res) => {
     }
     complain
       .save()
-      .then(() => {
+      .then(result => {
+        Authority.find({
+            level:result.level+1
+        })
+        .then(admin=>{
+            transporter.sendMail({
+                to:admin.email,
+                from:"savishkargec@gmail.com",
+                subject:"Complain Fired",
+                html:`
+                <p> A Complain has been fired by the locals and has been varified by the ward authority. The complain will appear in your destop<br /> please to the necessary 
+                <br />
+                Thank you 
+                </p>
+                `
+
+            },(err,result)=>{
+                if(err){
+                    console.log(err)
+                }
+                else{
+                    res.send("success")
+                }
+                transporter.close()
+            })
+        })
         res.status(200).send("Level Updated Sucessfully");
       })
       .catch((err) => {
