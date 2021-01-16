@@ -6,6 +6,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   overflow-x: hidden;
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
 }
 nav {
   background-color: black;

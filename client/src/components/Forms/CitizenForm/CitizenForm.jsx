@@ -132,7 +132,7 @@ class CitizenForm extends Component {
     // console.log(updatedFormElement)
   };
   updateLocation = (location) => {
-    this.setState({ lat: location.lat, long: location.lng });
+    this.setState({ lat: location.lat, lon: location.lng });
   };
 
   submitHandler = (event) => {

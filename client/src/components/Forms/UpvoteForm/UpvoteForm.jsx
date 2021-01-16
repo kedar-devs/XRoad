@@ -3,6 +3,7 @@ import Button from "../../UI/Button/Button";
 import classes from "./UpvoteForm.module.css";
 import Input from "../../UI/Input/Input";
 import Spinner from "../../UI/Spinner/Spinner";
+import axios from "axios";
 class UpvoteForm extends Component {
   state = {
     orderForm: {
@@ -79,7 +80,14 @@ class UpvoteForm extends Component {
       ].value;
     }
     formData["id"] = this.props.match.params.id;
-    alert(JSON.stringify(formData, null, 2));
+    axios
+      .put("http://localhost:5000/complain/upvote", formData)
+      .then((res) => console.log(res))
+      .catch((err) => {
+        console.log("There is an error here in the upvote");
+        console.log(err);
+      });
+    // alert(JSON.stringify(formData, null, 2));
   };
 
   render() {

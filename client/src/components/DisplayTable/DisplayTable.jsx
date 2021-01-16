@@ -56,16 +56,18 @@ const rows = [
 const useStyles = makeStyles({
   root: {
     width: "100%",
+    background: "transparent",
+    color: "white",
   },
   container: {
-    maxHeight: 440,
+    maxHeight: "calc(100vh - 80px)",
   },
 });
 
 export default function StickyHeadTable() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -86,7 +88,11 @@ export default function StickyHeadTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{
+                    minWidth: column.minWidth,
+                    background: "rgba(0,0,0,.7)",
+                    color: "white",
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -98,16 +104,24 @@ export default function StickyHeadTable() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, i) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={i}>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={i}
+                    style={{ background: "rgba(0,0,0,.5)" }}
+                  >
+                    <TableCell style={{ color: "white " }}>
+                      {row.name}
+                    </TableCell>
+                    <TableCell style={{ color: "white " }}>
                       {moment(row.code).format("MMMM Do YYYY")}
                     </TableCell>
                     <TableCell align={"right"}>
                       <ProgressStatus value={row.population} />
                     </TableCell>
                     <TableCell align={"right"}>
-                      <Link to={`/upvote/1`}>
+                      <Link to={`/upvote/1`} style={{ color: "white " }}>
                         <EjectIcon />
                       </Link>
                     </TableCell>
@@ -118,13 +132,14 @@ export default function StickyHeadTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 100]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
+        style={{ color: "white " }}
       />
     </Paper>
   );
